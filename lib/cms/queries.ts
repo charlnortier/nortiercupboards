@@ -233,3 +233,16 @@ export async function getPortfolioItemBySlug(slug: string): Promise<PortfolioIte
     .single();
   return (data as PortfolioItem) ?? null;
 }
+
+export async function getFeaturedPortfolioItems(): Promise<PortfolioItem[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("portfolio_items")
+    .select("*")
+    .eq("is_published", true)
+    .eq("is_featured", true)
+    .is("deleted_at", null)
+    .order("display_order")
+    .limit(4);
+  return (data as PortfolioItem[]) ?? [];
+}

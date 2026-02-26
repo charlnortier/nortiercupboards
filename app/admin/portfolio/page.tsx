@@ -26,8 +26,8 @@ type PortfolioForm = Omit<PortfolioItem, "id" | "created_at" | "updated_at" | "d
 function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+    .replaceAll(/[^a-z0-9]+/g, "-")
+    .replaceAll(/(^-)|(-$)/g, "");
 }
 
 const emptyItem = (): PortfolioForm => ({
@@ -185,8 +185,9 @@ export default function PortfolioAdmin() {
         <Card key={item.id ?? `new-${i}`}>
           <CardContent className="space-y-4 pt-6">
             <div>
-              <label className="mb-1 block text-sm font-medium">Slug</label>
+              <label htmlFor={`slug-${i}`} className="mb-1 block text-sm font-medium">Slug</label>
               <Input
+                id={`slug-${i}`}
                 value={item.slug}
                 onChange={(e) => handleSlugChange(i, e.target.value)}
                 placeholder="auto-generated-from-title"
@@ -208,10 +209,11 @@ export default function PortfolioAdmin() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-1 block text-sm font-medium">
+                <label htmlFor={`industry-${i}`} className="mb-1 block text-sm font-medium">
                   Industry
                 </label>
                 <Input
+                  id={`industry-${i}`}
                   value={item.industry ?? ""}
                   onChange={(e) =>
                     updateItem(i, "industry", e.target.value || null)
@@ -220,10 +222,11 @@ export default function PortfolioAdmin() {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">
+                <label htmlFor={`live-url-${i}`} className="mb-1 block text-sm font-medium">
                   Live URL
                 </label>
                 <Input
+                  id={`live-url-${i}`}
                   value={item.live_url ?? ""}
                   onChange={(e) =>
                     updateItem(i, "live_url", e.target.value || null)
@@ -240,7 +243,7 @@ export default function PortfolioAdmin() {
             />
 
             <div>
-              <label className="mb-1 block text-sm font-medium">
+              <label htmlFor={`tech-stack-${i}`} className="mb-1 block text-sm font-medium">
                 Tech Stack
               </label>
               <DynamicStringList
@@ -258,7 +261,7 @@ export default function PortfolioAdmin() {
             />
 
             <div>
-              <label className="mb-1 block text-sm font-medium">
+              <label htmlFor={`gallery-${i}`} className="mb-1 block text-sm font-medium">
                 Gallery Images
               </label>
               <DynamicStringList
@@ -273,8 +276,9 @@ export default function PortfolioAdmin() {
 
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="flex items-end">
-                <label className="flex items-center gap-2 text-sm font-medium">
+                <label htmlFor={`published-${i}`} className="flex items-center gap-2 text-sm font-medium">
                   <input
+                    id={`published-${i}`}
                     type="checkbox"
                     checked={item.is_published}
                     onChange={(e) =>
@@ -286,8 +290,9 @@ export default function PortfolioAdmin() {
                 </label>
               </div>
               <div className="flex items-end">
-                <label className="flex items-center gap-2 text-sm font-medium">
+                <label htmlFor={`featured-${i}`} className="flex items-center gap-2 text-sm font-medium">
                   <input
+                    id={`featured-${i}`}
                     type="checkbox"
                     checked={item.is_featured}
                     onChange={(e) =>
@@ -299,10 +304,11 @@ export default function PortfolioAdmin() {
                 </label>
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">
+                <label htmlFor={`display-order-${i}`} className="mb-1 block text-sm font-medium">
                   Display Order
                 </label>
                 <Input
+                  id={`display-order-${i}`}
                   type="number"
                   value={item.display_order}
                   onChange={(e) =>
