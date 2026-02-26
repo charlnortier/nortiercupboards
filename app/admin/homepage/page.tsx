@@ -350,55 +350,18 @@ export default function AdminHomepagePage() {
         </CardHeader>
         <CardContent className="space-y-4">
           {trustStats.map((stat, i) => (
-            <div key={i} className="flex items-start gap-3 rounded-lg border p-4">
-              <GripVertical className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />
-              <div className="flex-1 space-y-3">
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <Field
-                    label="Icon (emoji)"
-                    value={stat.icon}
-                    onChange={(v) =>
-                      setTrustStats((prev) =>
-                        prev.map((s, j) => (j === i ? { ...s, icon: v } : s))
-                      )
-                    }
-                    placeholder="🏠"
-                  />
-                  <Field
-                    label="Value"
-                    value={stat.value}
-                    onChange={(v) =>
-                      setTrustStats((prev) =>
-                        prev.map((s, j) => (j === i ? { ...s, value: v } : s))
-                      )
-                    }
-                    placeholder="20+"
-                  />
-                  <div className="flex items-end gap-2">
-                    <div className="flex-1">
-                      <LocalizedInput
-                        label="Label"
-                        value={stat.label}
-                        onChange={(v) =>
-                          setTrustStats((prev) =>
-                            prev.map((s, j) => (j === i ? { ...s, label: v } : s))
-                          )
-                        }
-                        placeholder="Years Experience"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mt-2 shrink-0 text-destructive"
-                onClick={() => setTrustStats((prev) => prev.filter((_, j) => j !== i))}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
+            <TrustStatEditor
+              key={`stat-${stat.value}-${stat.label.en || i}`}
+              stat={stat}
+              onUpdate={(updated) =>
+                setTrustStats((prev) =>
+                  prev.map((s, j) => (j === i ? updated : s))
+                )
+              }
+              onRemove={() =>
+                setTrustStats((prev) => prev.filter((_, j) => j !== i))
+              }
+            />
           ))}
           <Button
             variant="outline"
@@ -433,64 +396,22 @@ export default function AdminHomepagePage() {
           />
 
           {services.items.map((item, i) => (
-            <div key={i} className="flex items-start gap-3 rounded-lg border p-4">
-              <GripVertical className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />
-              <div className="flex-1 space-y-3">
-                <Field
-                  label="Icon (emoji)"
-                  value={item.icon}
-                  onChange={(v) =>
-                    setServices((prev) => ({
-                      ...prev,
-                      items: prev.items.map((s, j) =>
-                        j === i ? { ...s, icon: v } : s
-                      ),
-                    }))
-                  }
-                  placeholder="🔨"
-                />
-                <LocalizedInput
-                  label="Title"
-                  value={item.title}
-                  onChange={(v) =>
-                    setServices((prev) => ({
-                      ...prev,
-                      items: prev.items.map((s, j) =>
-                        j === i ? { ...s, title: v } : s
-                      ),
-                    }))
-                  }
-                  placeholder="Kitchen Cupboards"
-                />
-                <LocalizedInput
-                  label="Description"
-                  value={item.description}
-                  onChange={(v) =>
-                    setServices((prev) => ({
-                      ...prev,
-                      items: prev.items.map((s, j) =>
-                        j === i ? { ...s, description: v } : s
-                      ),
-                    }))
-                  }
-                  placeholder="Custom-designed kitchen cabinetry..."
-                  multiline
-                />
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mt-2 shrink-0 text-destructive"
-                onClick={() =>
-                  setServices((prev) => ({
-                    ...prev,
-                    items: prev.items.filter((_, j) => j !== i),
-                  }))
-                }
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
+            <ServiceItemEditor
+              key={`service-${item.title.en || i}`}
+              item={item}
+              onUpdate={(updated) =>
+                setServices((prev) => ({
+                  ...prev,
+                  items: prev.items.map((s, j) => (j === i ? updated : s)),
+                }))
+              }
+              onRemove={() =>
+                setServices((prev) => ({
+                  ...prev,
+                  items: prev.items.filter((_, j) => j !== i),
+                }))
+              }
+            />
           ))}
           <Button
             variant="outline"
@@ -669,6 +590,105 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
       />
+    </div>
+  );
+}
+
+/* ---------- Trust Stat Editor ---------- */
+
+function TrustStatEditor({
+  stat,
+  onUpdate,
+  onRemove,
+}: {
+  stat: TrustStat;
+  onUpdate: (updated: TrustStat) => void;
+  onRemove: () => void;
+}) {
+  return (
+    <div className="flex items-start gap-3 rounded-lg border p-4">
+      <GripVertical className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />
+      <div className="flex-1 space-y-3">
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Field
+            label="Icon (emoji)"
+            value={stat.icon}
+            onChange={(v) => onUpdate({ ...stat, icon: v })}
+            placeholder="🏠"
+          />
+          <Field
+            label="Value"
+            value={stat.value}
+            onChange={(v) => onUpdate({ ...stat, value: v })}
+            placeholder="20+"
+          />
+          <div className="flex items-end gap-2">
+            <div className="flex-1">
+              <LocalizedInput
+                label="Label"
+                value={stat.label}
+                onChange={(v) => onUpdate({ ...stat, label: v })}
+                placeholder="Years Experience"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="mt-2 shrink-0 text-destructive"
+        onClick={onRemove}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+}
+
+/* ---------- Service Item Editor ---------- */
+
+function ServiceItemEditor({
+  item,
+  onUpdate,
+  onRemove,
+}: {
+  item: ServiceItem;
+  onUpdate: (updated: ServiceItem) => void;
+  onRemove: () => void;
+}) {
+  return (
+    <div className="flex items-start gap-3 rounded-lg border p-4">
+      <GripVertical className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />
+      <div className="flex-1 space-y-3">
+        <Field
+          label="Icon (emoji)"
+          value={item.icon}
+          onChange={(v) => onUpdate({ ...item, icon: v })}
+          placeholder="🔨"
+        />
+        <LocalizedInput
+          label="Title"
+          value={item.title}
+          onChange={(v) => onUpdate({ ...item, title: v })}
+          placeholder="Kitchen Cupboards"
+        />
+        <LocalizedInput
+          label="Description"
+          value={item.description}
+          onChange={(v) => onUpdate({ ...item, description: v })}
+          placeholder="Custom-designed kitchen cabinetry..."
+          multiline
+        />
+      </div>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="mt-2 shrink-0 text-destructive"
+        onClick={onRemove}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
     </div>
   );
 }

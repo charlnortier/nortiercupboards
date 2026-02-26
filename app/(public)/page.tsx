@@ -189,9 +189,9 @@ export default async function HomePage() {
               </p>
             )}
             <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {services.items.map((item, i) => (
+              {services.items.map((item) => (
                 <div
-                  key={i}
+                  key={item.title?.en ?? item.icon}
                   className="rounded-xl border bg-card p-6 transition-shadow hover:shadow-md"
                 >
                   {item.icon && (

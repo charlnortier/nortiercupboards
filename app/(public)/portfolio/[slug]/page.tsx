@@ -126,8 +126,8 @@ export default async function PortfolioDetailPage({
           <div className="mb-10">
             <h2 className="mb-3 text-xl font-semibold">About this project</h2>
             <div className="space-y-3 text-muted-foreground">
-              {item.description.en.split("\n\n").map((p, i) => (
-                <p key={i}>{p}</p>
+              {item.description.en.split("\n\n").map((p) => (
+                <p key={p.substring(0, 30)}>{p}</p>
               ))}
             </div>
           </div>
@@ -138,8 +138,8 @@ export default async function PortfolioDetailPage({
           <div className="mb-10">
             <h2 className="mb-3 text-xl font-semibold">Key Features</h2>
             <ul className="list-inside list-disc space-y-1 text-muted-foreground">
-              {item.features.map((f, i) => (
-                <li key={i}>{f.en}</li>
+              {item.features.map((f) => (
+                <li key={f.en}>{f.en}</li>
               ))}
             </ul>
           </div>
@@ -164,14 +164,14 @@ export default async function PortfolioDetailPage({
           <div className="mb-10">
             <h2 className="mb-3 text-xl font-semibold">Gallery</h2>
             <div className="grid gap-4 sm:grid-cols-2">
-              {item.images.map((img, i) => (
+              {item.images.map((img) => (
                 <div
-                  key={i}
+                  key={img}
                   className="relative aspect-[16/10] overflow-hidden rounded-lg bg-muted"
                 >
                   <Image
                     src={img}
-                    alt={`${item.title.en} screenshot ${i + 1}`}
+                    alt={`${item.title.en} gallery image`}
                     fill
                     className="object-cover"
                   />
