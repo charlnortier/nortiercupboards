@@ -2,7 +2,7 @@
 
 > Last updated: 2026-02-26
 
-## Status: ~85% Complete (Phases 1–3 done, Phase 4 partial)
+## Status: ~95% Complete (Phases 1–4 done, Phase 5 mostly done)
 
 Build specs: `project_brief/build plan/BUILD_INDEX.md`
 
@@ -29,23 +29,29 @@ Build specs: `project_brief/build plan/BUILD_INDEX.md`
 - [x] Full-screen lightbox with carousel
 - [x] Before/after drag slider component
 
-### Phase 4: Admin Dashboard — PARTIAL
+### Phase 4: Admin Dashboard — COMPLETE
 
 - [x] Admin layout shell + dashboard stats
 - [x] Portfolio admin (full CRUD with image upload)
 - [x] Contact admin (submissions table, read status)
 - [x] Auth pages (login, register, forgot-password, reset-password)
-- [ ] Admin content editor (CMS for all page sections)
-- [ ] Admin settings form (site settings, branding, contact details)
-- [ ] Admin leads management (status updates, follow-up tracking)
+- [x] Admin homepage editor (hero, stats, services, about, CTA sections)
+- [x] Admin FAQ management (CRUD with bilingual support)
+- [x] Admin settings form (site settings, branding, contact, social, maps)
+- [x] Admin SEO management (per-page metadata editor)
+- [x] Admin legal documents management
 
-### Phase 5: Legal & SEO — NOT STARTED
+### Phase 5: Content & SEO — MOSTLY DONE
 
-- [ ] FAQ page content
-- [ ] Terms & Conditions content
-- [ ] Privacy Policy content
-- [ ] SEO metadata for all pages
-- [ ] Structured data (LocalBusiness, Organization)
+- [x] FAQ page content (7 bilingual FAQs seeded)
+- [x] Terms & Conditions content (bilingual, POPIA-compliant)
+- [x] Privacy Policy content (bilingual, POPIA-compliant)
+- [x] About page content (story, process, values, service area)
+- [x] Homepage sections content (hero, stats, services, about, CTA)
+- [x] SEO metadata for all pages (page_seo seeded for all 8 pages)
+- [x] Structured data (Organization, LocalBusiness, FAQPage)
+- [x] Sitemap & robots.txt
+- [x] i18n / bilingual support (en/af) enabled
 - [ ] Performance audit & optimisation
 
 ### Outstanding Items
