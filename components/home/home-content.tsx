@@ -79,7 +79,6 @@ export function HomeContent({
           {hero.background_video && (
             <video
               autoPlay
-              loop
               muted
               playsInline
               poster={hero.background_image || undefined}
