@@ -139,13 +139,13 @@ export function SeoEditSheet({ page, open, onOpenChange }: SeoEditSheetProps) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full overflow-y-auto sm:max-w-lg">
-        <SheetHeader>
+      <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
+        <SheetHeader className="px-6 pt-6">
           <SheetTitle>Edit SEO — {label}</SheetTitle>
         </SheetHeader>
 
         {page && (
-          <div className="mt-6 space-y-6">
+          <div className="space-y-6 px-6 pb-8">
             {/* Route */}
             <div className="space-y-2">
               <Label>Page Key</Label>

@@ -31,6 +31,13 @@ interface PageSeoRow {
   changefreq: string | null;
 }
 
+/** Display order — nav pages first, legal at the bottom. */
+const PAGE_ORDER: string[] = [
+  "home", "about", "services", "portfolio", "blog",
+  "shop", "book", "courses", "contact", "faq",
+  "terms", "privacy",
+];
+
 const PAGE_LABELS: Record<string, string> = {
   home: "Home",
   about: "About",
@@ -69,9 +76,14 @@ export default function AdminSeoPage() {
       const supabase = createClient();
       const { data } = await supabase
         .from("page_seo")
-        .select("*")
-        .order("page_key");
-      setPages((data as PageSeoRow[]) ?? []);
+        .select("*");
+      const rows = (data as PageSeoRow[]) ?? [];
+      rows.sort((a, b) => {
+        const ai = PAGE_ORDER.indexOf(a.page_key);
+        const bi = PAGE_ORDER.indexOf(b.page_key);
+        return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+      });
+      setPages(rows);
       setLoading(false);
     }
     load();
