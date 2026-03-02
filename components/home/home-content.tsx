@@ -16,6 +16,7 @@ interface HeroContent {
   cta_secondary_text?: LocalizedString;
   cta_secondary_url?: string;
   background_image?: string;
+  background_video?: string;
 }
 
 interface TrustStatsContent {
@@ -74,7 +75,21 @@ export function HomeContent({
       {/* ───── 1. Hero ───── */}
       {hero && (
         <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-[#0F1D36] md:min-h-[85vh]">
-          {hero.background_image ? (
+          {/* Background video */}
+          {hero.background_video && (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster={hero.background_image || undefined}
+              className="absolute inset-0 h-full w-full object-cover"
+            >
+              <source src={hero.background_video} type="video/mp4" />
+            </video>
+          )}
+          {/* Background image (fallback when no video) */}
+          {!hero.background_video && hero.background_image && (
             <Image
               src={hero.background_image}
               alt=""
@@ -82,8 +97,8 @@ export function HomeContent({
               priority
               className="object-cover"
             />
-          ) : null}
-          <div className="absolute inset-0 bg-[#1B2A4A]/80" />
+          )}
+          <div className="absolute inset-0 bg-[#1B2A4A]/70" />
 
           <div className="relative z-10 mx-auto max-w-3xl px-4 py-20 text-center">
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
