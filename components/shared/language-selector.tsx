@@ -16,7 +16,7 @@ export function LanguageSelector() {
     <Button
       variant="ghost"
       size="sm"
-      className="h-9 gap-1.5 px-2 text-muted-foreground hover:text-foreground"
+      className="h-9 gap-1.5 px-2 text-white/70 hover:text-white hover:bg-white/10"
       onClick={toggle}
       aria-label={`Switch language to ${locale === "en" ? "Afrikaans" : "English"}`}
     >

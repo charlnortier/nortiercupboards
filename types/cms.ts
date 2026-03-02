@@ -7,6 +7,15 @@
 
 export type LocalizedString = { en: string; af: string };
 
+// ─── Business Hours ───────────────────────────────────────
+
+export interface DaySchedule {
+  day: string;
+  open: boolean;
+  from: string;
+  to: string;
+}
+
 // ─── Site Settings ────────────────────────────────────────
 
 export interface SiteSettings {
@@ -25,7 +34,7 @@ export interface SiteSettings {
   google_maps_url?: string;
   google_maps_coordinates?: { lat: number; lng: number };
   coordinates?: string;
-  business_hours?: string;
+  business_hours?: string | DaySchedule[];
   social_links?: { platform: string; url: string }[];
   social_facebook?: string;
   social_instagram?: string;

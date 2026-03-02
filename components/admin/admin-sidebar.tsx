@@ -5,30 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
-  Home,
   Navigation,
   Settings,
-  FileText,
   Globe,
-  ShoppingBag,
-  CalendarDays,
-  GraduationCap,
-  Newspaper,
   Search as SearchIcon,
   Menu,
   X,
   Mail,
   UserCog,
-  Image,
-  MapPin,
-  MessageSquare,
-  Activity,
-  Receipt,
-  Megaphone,
-  MessageCircle as MessageCircleIcon,
   Scale,
-  Tag,
-  Users,
+  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminSignOutButton } from "@/components/auth/admin-sign-out-button";
@@ -59,55 +45,12 @@ function buildSidebarNav(): NavGroup[] {
 
   // Content
   const contentItems: NavItem[] = [
-    { href: "/admin/homepage", label: "Homepage", icon: Home },
+    { href: "/admin/pages", label: "Pages", icon: Layers },
   ];
-  if (isEnabled("blog")) {
-    contentItems.push({ href: "/admin/blog", label: "Blog", icon: FileText });
-  }
-  if (isEnabled("portfolio")) {
-    contentItems.push({ href: "/admin/portfolio", label: "Portfolio", icon: Image });
-  }
-  if (isEnabled("shop")) {
-    contentItems.push({ href: "/admin/shop", label: "Shop", icon: ShoppingBag });
-  }
-  if (isEnabled("booking")) {
-    contentItems.push({ href: "/admin/booking", label: "Booking", icon: CalendarDays });
-  }
-  if (isEnabled("lms")) {
-    contentItems.push({ href: "/admin/lms", label: "Courses", icon: GraduationCap });
-  }
-  if (isEnabled("newsletter")) {
-    contentItems.push({ href: "/admin/newsletter", label: "Newsletter", icon: Newspaper });
-  }
-  if (isEnabled("serviceAreaPages")) {
-    contentItems.push({ href: "/admin/areas", label: "Service Areas", icon: MapPin });
+  if (isEnabled("legalDocs")) {
+    contentItems.push({ href: "/admin/legal", label: "Legal Docs", icon: Scale });
   }
   groups.push({ title: "Content", items: contentItems });
-
-  // Manage
-  const manageItems: NavItem[] = [
-    { href: "/admin/contact", label: "Messages", icon: MessageSquare },
-    { href: "/admin/activity", label: "Activity Log", icon: Activity },
-  ];
-  if (isEnabled("billing")) {
-    manageItems.push({ href: "/admin/billing", label: "Billing", icon: Receipt });
-  }
-  if (isEnabled("emailCampaigns") || isEnabled("dripEmails")) {
-    manageItems.push({ href: "/admin/campaigns", label: "Campaigns", icon: Megaphone });
-  }
-  if (isEnabled("whatsapp")) {
-    manageItems.push({ href: "/admin/whatsapp", label: "WhatsApp", icon: MessageCircleIcon });
-  }
-  if (isEnabled("legalDocs")) {
-    manageItems.push({ href: "/admin/legal", label: "Legal Docs", icon: Scale });
-  }
-  if (isEnabled("coupons") || isEnabled("gifts") || isEnabled("hybridPackages")) {
-    manageItems.push({ href: "/admin/commerce", label: "Commerce", icon: Tag });
-  }
-  if (isEnabled("clientImport")) {
-    manageItems.push({ href: "/admin/clients/import", label: "Client Import", icon: Users });
-  }
-  groups.push({ title: "Manage", items: manageItems });
 
   // Site
   const siteItems: NavItem[] = [

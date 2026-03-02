@@ -10,6 +10,7 @@ import { LocalizedInput } from "@/components/admin/localized-input";
 import { LocalizedStringList } from "@/components/admin/localized-string-list";
 import { DynamicStringList } from "@/components/admin/dynamic-string-list";
 import { ImageUpload } from "@/components/admin/image-upload";
+import { MultiImageUpload } from "@/components/admin/multi-image-upload";
 import type { PortfolioItem, LocalizedString } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -254,25 +255,20 @@ export default function PortfolioAdmin() {
             </div>
 
             <ImageUpload
-              label="Hero Image"
+              label="Hero Image (After)"
               value={item.hero_image_url}
               onChange={(url) => updateItem(i, "hero_image_url", url)}
               folder="portfolio"
+              bucket="gallery"
             />
 
-            <div>
-              <label htmlFor={`gallery-${i}`} className="mb-1 block text-sm font-medium">
-                Gallery Images
-              </label>
-              <DynamicStringList
-                value={item.images ?? []}
-                onChange={(imgs) => updateItem(i, "images", imgs)}
-                placeholder="Paste image URL"
-              />
-              <p className="mt-1 text-xs text-muted-foreground">
-                Add URLs for additional project screenshots.
-              </p>
-            </div>
+            <MultiImageUpload
+              label="Gallery Images (Before & additional photos)"
+              value={item.images ?? []}
+              onChange={(imgs) => updateItem(i, "images", imgs)}
+              folder="portfolio"
+              bucket="gallery"
+            />
 
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="flex items-end">

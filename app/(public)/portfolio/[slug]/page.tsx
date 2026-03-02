@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import { ArrowLeft, ExternalLink } from "lucide-react";
 import { getPortfolioItemBySlug } from "@/lib/cms/queries";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
+import { PortfolioDetailContent } from "@/components/portfolio/portfolio-detail-content";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || `https://${siteConfig.domain}`;
@@ -74,124 +70,7 @@ export default async function PortfolioDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-
-      <article className="mx-auto max-w-4xl px-4 py-16 md:px-8">
-        {/* Back link */}
-        <Link
-          href="/portfolio"
-          className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Portfolio
-        </Link>
-
-        {/* Header */}
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground md:text-4xl">
-            {item.title.en}
-          </h1>
-          <div className="mt-3 flex flex-wrap items-center gap-3">
-            {item.industry && (
-              <Badge variant="secondary">{item.industry}</Badge>
-            )}
-            {item.live_url && (
-              <a
-                href={item.live_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-                Visit live site
-              </a>
-            )}
-          </div>
-        </header>
-
-        {/* Hero image */}
-        {item.hero_image_url && (
-          <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-xl bg-muted">
-            <Image
-              src={item.hero_image_url}
-              alt={item.alt_text?.en || item.title.en}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        )}
-
-        {/* Description */}
-        {item.description?.en && (
-          <div className="mb-10">
-            <h2 className="mb-3 text-xl font-semibold">About this project</h2>
-            <div className="space-y-3 text-muted-foreground">
-              {item.description.en.split("\n\n").map((p) => (
-                <p key={p.substring(0, 30)}>{p}</p>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Features / highlights */}
-        {item.features && item.features.length > 0 && (
-          <div className="mb-10">
-            <h2 className="mb-3 text-xl font-semibold">Key Features</h2>
-            <ul className="list-inside list-disc space-y-1 text-muted-foreground">
-              {item.features.map((f) => (
-                <li key={f.en}>{f.en}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Tech stack */}
-        {item.tech_stack && item.tech_stack.length > 0 && (
-          <div className="mb-10">
-            <h2 className="mb-3 text-xl font-semibold">Tech Stack</h2>
-            <div className="flex flex-wrap gap-2">
-              {item.tech_stack.map((tech) => (
-                <Badge key={tech} variant="outline">
-                  {tech}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Image gallery */}
-        {item.images && item.images.length > 0 && (
-          <div className="mb-10">
-            <h2 className="mb-3 text-xl font-semibold">Gallery</h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {item.images.map((img) => (
-                <div
-                  key={img}
-                  className="relative aspect-[16/10] overflow-hidden rounded-lg bg-muted"
-                >
-                  <Image
-                    src={img}
-                    alt={`${item.title.en} gallery image`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* CTA */}
-        <div className="mt-12 rounded-xl border bg-muted/30 p-8 text-center">
-          <h2 className="text-xl font-semibold">Interested in similar work?</h2>
-          <p className="mt-2 text-muted-foreground">
-            Get in touch and let&apos;s discuss your project.
-          </p>
-          <Button asChild className="mt-4">
-            <Link href="/contact">Contact Us</Link>
-          </Button>
-        </div>
-      </article>
+      <PortfolioDetailContent item={item} />
     </>
   );
 }

@@ -102,6 +102,19 @@ export async function getFaqs(): Promise<Faq[]> {
   return (data as Faq[]) ?? [];
 }
 
+// ---------- Legal Documents ----------
+
+export async function getLegalDocumentBySlug(slug: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("legal_documents")
+    .select("title, slug, content, version, updated_at")
+    .eq("slug", slug)
+    .eq("active", true)
+    .single();
+  return data;
+}
+
 // ---------- Page SEO ----------
 
 export async function getPageSeo(pageKey: string): Promise<PageSeo | null> {

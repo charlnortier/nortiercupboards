@@ -44,11 +44,6 @@ interface Props {
 
 const KEY_LABELS: Record<string, string> = {
   contact_confirmation: "Contact Confirmation",
-  booking_confirmation: "Booking Confirmation",
-  booking_cancellation: "Booking Cancellation",
-  booking_reminder: "Booking Reminder",
-  booking_reschedule: "Booking Reschedule",
-  order_confirmation: "Order Confirmation",
   welcome: "Welcome Email",
   password_reset: "Password Reset",
 };

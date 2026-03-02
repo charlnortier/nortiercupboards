@@ -4,14 +4,15 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import type { PortfolioItem } from "@/types";
 import { Lightbox } from "@/components/gallery/lightbox";
+import { useLocale } from "@/lib/locale";
 
 /** Map of industry values to display labels for filter pills. */
-const ROOM_LABELS: Record<string, string> = {
-  Kitchen: "Kitchens",
-  Bedroom: "Bedrooms",
-  Bathroom: "Bathrooms",
-  Study: "Studies",
-  Other: "Other",
+const ROOM_LABELS: Record<string, { en: string; af: string }> = {
+  Kitchen: { en: "Kitchens", af: "Kombuise" },
+  Bedroom: { en: "Bedrooms", af: "Slaapkamers" },
+  Bathroom: { en: "Bathrooms", af: "Badkamers" },
+  Study: { en: "Studies", af: "Studeerkamers" },
+  Other: { en: "Other", af: "Ander" },
 };
 
 interface GalleryGridProps {
@@ -24,6 +25,7 @@ function hasBeforeAfter(item: PortfolioItem): boolean {
 }
 
 export function GalleryGrid({ items }: GalleryGridProps) {
+  const { t } = useLocale();
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [lightbox, setLightbox] = useState<{
     images: string[];
@@ -58,7 +60,7 @@ export function GalleryGrid({ items }: GalleryGridProps) {
     const ba = hasBeforeAfter(item);
     setLightbox({
       images: imgs,
-      alt: item.alt_text?.en || item.title.en,
+      alt: t(item.alt_text) || t(item.title),
       index: 0,
       beforeImage: ba ? item.images[0] : undefined,
     });
@@ -80,7 +82,9 @@ export function GalleryGrid({ items }: GalleryGridProps) {
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
-              {filter === "All" ? "All" : ROOM_LABELS[filter] ?? filter}
+              {filter === "All"
+                ? t({ en: "All", af: "Alles" })
+                : t(ROOM_LABELS[filter]) || filter}
             </button>
           );
         })}
@@ -89,7 +93,7 @@ export function GalleryGrid({ items }: GalleryGridProps) {
       {/* ---- Grid ---- */}
       {filtered.length === 0 ? (
         <p className="mt-12 text-center text-muted-foreground">
-          No projects found for this category. Check back soon!
+          {t({ en: "No projects found for this category. Check back soon!", af: "Geen projekte gevind vir hierdie kategorie nie. Kyk weer later!" })}
         </p>
       ) : (
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -107,28 +111,28 @@ export function GalleryGrid({ items }: GalleryGridProps) {
                 {item.hero_image_url ? (
                   <Image
                     src={item.hero_image_url}
-                    alt={item.alt_text?.en || item.title.en}
+                    alt={t(item.alt_text) || t(item.title)}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
                   <span className="flex h-full w-full items-center justify-center text-3xl font-bold text-muted-foreground/30">
-                    {item.title.en.charAt(0)}
+                    {t(item.title).charAt(0)}
                   </span>
                 )}
 
                 {/* Industry badge */}
                 {item.industry && (
                   <span className="absolute left-3 top-3 rounded-full bg-primary/90 px-2 py-1 text-xs text-primary-foreground">
-                    {ROOM_LABELS[item.industry] ?? item.industry}
+                    {t(ROOM_LABELS[item.industry]) || item.industry}
                   </span>
                 )}
 
                 {/* Before & After badge */}
                 {hasBeforeAfter(item) && (
                   <span className="absolute right-3 top-3 rounded-full bg-secondary/90 px-2 py-1 text-xs font-medium text-secondary-foreground">
-                    Before &amp; After
+                    {t({ en: "Before & After", af: "Voor & Na" })}
                   </span>
                 )}
               </button>
@@ -136,11 +140,11 @@ export function GalleryGrid({ items }: GalleryGridProps) {
               {/* Details */}
               <div className="p-4">
                 <h2 className="font-semibold text-foreground">
-                  {item.title.en}
+                  {t(item.title)}
                 </h2>
-                {item.description?.en && (
+                {t(item.description) && (
                   <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                    {item.description.en}
+                    {t(item.description)}
                   </p>
                 )}
               </div>

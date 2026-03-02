@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { submitContactForm } from "@/lib/contact/actions";
+import { useLocale } from "@/lib/locale";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +11,7 @@ import { Loader2, Send, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export function ContactForm() {
+  const { t } = useLocale();
   const [state, formAction, isPending] = useActionState(
     submitContactForm,
     null
@@ -18,19 +20,18 @@ export function ContactForm() {
 
   useEffect(() => {
     if (state?.success) {
-      toast.success("Message sent! We'll get back to you soon.");
+      toast.success(t({ en: "Message sent! We'll get back to you soon.", af: "Boodskap gestuur! Ons sal binnekort reageer." }));
       formRef.current?.reset();
     }
-  }, [state]);
+  }, [state, t]);
 
   if (state?.success) {
     return (
       <div className="flex flex-col items-center gap-4 rounded-xl border bg-card p-8 text-center">
         <CheckCircle className="h-12 w-12 text-green-500" />
-        <h3 className="text-lg font-semibold">Message Sent</h3>
+        <h3 className="text-lg font-semibold">{t({ en: "Message Sent", af: "Boodskap Gestuur" })}</h3>
         <p className="text-sm text-muted-foreground">
-          Thank you for reaching out. We&apos;ll get back to you as soon as
-          possible.
+          {t({ en: "Thank you for reaching out. We'll get back to you as soon as possible.", af: "Dankie dat jy ons gekontak het. Ons sal so gou moontlik reageer." })}
         </p>
       </div>
     );
@@ -50,19 +51,19 @@ export function ContactForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="name">Name *</Label>
+        <Label htmlFor="name">{t({ en: "Name", af: "Naam" })} *</Label>
         <Input
           id="name"
           name="name"
           required
-          placeholder="Your full name"
+          placeholder={t({ en: "Your full name", af: "Jou volle naam" })}
           disabled={isPending}
           autoComplete="name"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="email">Email *</Label>
+        <Label htmlFor="email">{t({ en: "Email", af: "E-pos" })} *</Label>
         <Input
           id="email"
           name="email"
@@ -75,7 +76,7 @@ export function ContactForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="phone">Phone</Label>
+        <Label htmlFor="phone">{t({ en: "Phone", af: "Telefoon" })}</Label>
         <Input
           id="phone"
           name="phone"
@@ -87,54 +88,54 @@ export function ContactForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="service">Service Interest</Label>
+        <Label htmlFor="service">{t({ en: "Service Interest", af: "Dienste-belangstelling" })}</Label>
         <select
           id="service"
           name="service"
           disabled={isPending}
-          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 font-sans text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <option value="">Select a service (optional)</option>
-          <option value="Kitchen Cupboards">Kitchen Cupboards</option>
-          <option value="Bedroom Cupboards">Bedroom Cupboards</option>
-          <option value="Bathroom Vanities">Bathroom Vanities</option>
-          <option value="Study & Office">Study & Office</option>
-          <option value="Loose Furniture">Loose Furniture</option>
-          <option value="Shutters & Blinds">Shutters & Blinds</option>
-          <option value="Other">Other</option>
+          <option value="">{t({ en: "Select a service (optional)", af: "Kies 'n diens (opsioneel)" })}</option>
+          <option value="Kitchen Cupboards">{t({ en: "Kitchen Cupboards", af: "Kombuiskaste" })}</option>
+          <option value="Bedroom Cupboards">{t({ en: "Bedroom Cupboards", af: "Slaapkamerkaste" })}</option>
+          <option value="Bathroom Vanities">{t({ en: "Bathroom Vanities", af: "Badkamermeubels" })}</option>
+          <option value="Study & Office">{t({ en: "Study & Office", af: "Studeerkamer & Kantoor" })}</option>
+          <option value="Loose Furniture">{t({ en: "Loose Furniture", af: "Los Meubels" })}</option>
+          <option value="Shutters & Blinds">{t({ en: "Shutters & Blinds", af: "Luike & Blindings" })}</option>
+          <option value="Other">{t({ en: "Other", af: "Ander" })}</option>
         </select>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message">Message *</Label>
+        <Label htmlFor="message">{t({ en: "Message", af: "Boodskap" })} *</Label>
         <Textarea
           id="message"
           name="message"
           required
-          placeholder="How can we help?"
+          placeholder={t({ en: "How can we help?", af: "Hoe kan ons help?" })}
           rows={5}
           disabled={isPending}
         />
       </div>
 
       <p className="text-xs text-muted-foreground">
-        By submitting this form you agree to our{" "}
+        {t({ en: "By submitting this form you agree to our", af: "Deur hierdie vorm in te dien stem jy in tot ons" })}{" "}
         <a href="/privacy" className="underline hover:text-foreground">
-          Privacy Policy
+          {t({ en: "Privacy Policy", af: "Privaatheidsbeleid" })}
         </a>{". "}
-        We will never share your information with third parties.
+        {t({ en: "We will never share your information with third parties.", af: "Ons sal nooit jou inligting met derde partye deel nie." })}
       </p>
 
       <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
         {isPending ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Sending...
+            {t({ en: "Sending...", af: "Stuur..." })}
           </>
         ) : (
           <>
             <Send className="mr-2 h-4 w-4" />
-            Send Message
+            {t({ en: "Send Message", af: "Stuur Boodskap" })}
           </>
         )}
       </Button>

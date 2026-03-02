@@ -22,6 +22,25 @@ export async function updateSiteContent(
   revalidatePath("/");
 }
 
+export async function upsertSiteContent(
+  sectionKey: string,
+  content: Record<string, unknown>
+) {
+  await ensureAdmin();
+  const supabase = createAdminClient();
+  const { error } = await supabase.from("site_content").upsert(
+    {
+      section_key: sectionKey,
+      content,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "section_key" }
+  );
+
+  if (error) throw new Error(error.message);
+  revalidatePath("/");
+}
+
 // ---- nav_links ----
 
 export async function upsertNavLink(data: {

@@ -11,6 +11,7 @@ export async function getEmailTemplates() {
   const { data, error } = await admin
     .from("email_templates")
     .select("*")
+    .in("key", ["welcome", "password_reset", "contact_confirmation"])
     .order("key");
 
   if (error) throw new Error(error.message);
