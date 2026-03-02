@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { PortfolioItem } from "@/types";
 import { Lightbox } from "@/components/gallery/lightbox";
 import { useLocale } from "@/lib/locale";
@@ -138,7 +139,7 @@ export function GalleryGrid({ items }: GalleryGridProps) {
               </button>
 
               {/* Details */}
-              <div className="p-4">
+              <Link href={`/portfolio/${item.slug}`} className="block p-4 transition-colors hover:bg-muted/50">
                 <h2 className="font-semibold text-foreground">
                   {t(item.title)}
                 </h2>
@@ -147,7 +148,7 @@ export function GalleryGrid({ items }: GalleryGridProps) {
                     {t(item.description)}
                   </p>
                 )}
-              </div>
+              </Link>
             </div>
           ))}
         </div>

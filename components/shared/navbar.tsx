@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { LanguageSelector } from "@/components/shared/language-selector";
 import { NavbarAuthButton } from "@/components/shared/navbar-auth-button";
 import { useLocale } from "@/lib/locale";
 import { CartIcon } from "@/components/shop/cart-icon";
@@ -55,7 +54,6 @@ export function Navbar({ links, settings }: NavbarProps) {
 
         {/* Desktop actions */}
         <div className="hidden items-center gap-2 md:flex">
-          <LanguageSelector />
           <ThemeToggle />
           {siteConfig.features.shop && <CartIcon />}
           <NavbarAuthButton />
@@ -96,7 +94,6 @@ export function Navbar({ links, settings }: NavbarProps) {
             ))}
             <div className="mt-4 flex items-center justify-between border-t border-[#C4A265]/10 pt-4">
               <div className="flex items-center gap-1">
-                <LanguageSelector />
                 <ThemeToggle />
                 {siteConfig.features.shop && <CartIcon />}
               </div>
