@@ -20,10 +20,6 @@ interface GalleryGridProps {
   items: PortfolioItem[];
 }
 
-/** Returns true when the item has a hero (after) image and at least one additional (before) image. */
-function hasBeforeAfter(item: PortfolioItem): boolean {
-  return !!(item.hero_image_url && item.images && item.images.length > 0);
-}
 
 export function GalleryGrid({ items }: GalleryGridProps) {
   const { t } = useLocale();
@@ -58,12 +54,10 @@ export function GalleryGrid({ items }: GalleryGridProps) {
     }
     if (imgs.length === 0) return;
 
-    const ba = hasBeforeAfter(item);
     setLightbox({
       images: imgs,
       alt: t(item.alt_text) || t(item.title),
       index: 0,
-      beforeImage: ba ? item.images[0] : undefined,
     });
   }
 
@@ -130,12 +124,6 @@ export function GalleryGrid({ items }: GalleryGridProps) {
                   </span>
                 )}
 
-                {/* Before & After badge */}
-                {hasBeforeAfter(item) && (
-                  <span className="absolute right-3 top-3 rounded-full bg-secondary/90 px-2 py-1 text-xs font-medium text-secondary-foreground">
-                    {t({ en: "Before & After", af: "Voor & Na" })}
-                  </span>
-                )}
               </button>
 
               {/* Details */}
