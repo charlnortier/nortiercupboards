@@ -26,7 +26,7 @@
 | `CURRENT.md` | 0.9 KB | 2026-10-05 |
 | `DECISIONS.md` | 3.7 KB | 2026-10-05 |
 | `EVIDENCE.md` | 8.3 KB | 2026-10-05 |
-| `GATES.md` | 2.1 KB | 2026-10-05 |
+| `GATES.md` | 2.2 KB | 2026-10-05 |
 | `README.md` | 1.6 KB | 2026-10-05 |
 | `STATUS.md` | 0.1 KB | 2026-10-05 |
 | `build\10-technical-design.md` | 27.0 KB | 2026-10-05 |

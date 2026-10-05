@@ -18,18 +18,18 @@ export function ContactForm() {
   );
   const formRef = useRef<HTMLFormElement>(null);
   const fillMsRef = useRef<HTMLInputElement>(null);
-  const mountedAtRef = useRef(0);
+  const firstInputAtRef = useRef(0);
 
-  // Time from the form becoming usable to the visitor's latest keystroke, for the
-  // server's too-fast-to-be-human check. Both ends are read from the browser's
-  // clock, so a visitor whose clock disagrees with the server's is never judged
-  // by the difference. Set after mount, so server and client HTML match.
-  useEffect(() => {
-    mountedAtRef.current = Date.now();
-  }, []);
+  // Time from the visitor's first keystroke to their latest, for the server's
+  // too-fast-to-be-human check. Anchored on the first input, not on mount: the
+  // server-rendered form is usable before hydration, so a mount-time clock would
+  // miss typing done while the script loaded and flag a slow phone as a bot. Both
+  // ends come from the browser's clock, so device clock skew never matters.
   const recordFillTime = () => {
-    if (fillMsRef.current && mountedAtRef.current) {
-      fillMsRef.current.value = String(Date.now() - mountedAtRef.current);
+    const now = Date.now();
+    if (!firstInputAtRef.current) firstInputAtRef.current = now;
+    if (fillMsRef.current) {
+      fillMsRef.current.value = String(now - firstInputAtRef.current);
     }
   };
 
@@ -63,10 +63,11 @@ export function ContactForm() {
       {/* Honeypots — off-screen and out of the tab order, so humans never see or
           reach them, but labelled like ordinary required fields so a form-filling
           bot completes them. Any value in either marks the submission as spam.
-          Names are ones browsers do not autofill. */}
+          Names match no autofill or password-manager profile field: the first trap
+          was "website", which 1Password's Identity item fills off-screen. */}
       <div className="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
-        <label htmlFor="website">Website *</label>
-        <input id="website" type="text" name="website" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="reference_number">Reference number *</label>
+        <input id="reference_number" type="text" name="reference_number" tabIndex={-1} autoComplete="off" />
         <label htmlFor="subject">Subject *</label>
         <input id="subject" type="text" name="subject" tabIndex={-1} autoComplete="off" />
       </div>

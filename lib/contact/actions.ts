@@ -18,7 +18,7 @@ const MIN_FILL_MS = 3000;
 /** Returns why a submission looks like a bot, or null. */
 function detectSpam(formData: FormData): string | null {
   // Hidden fields a human never sees (contact-form.tsx); bots fill them.
-  for (const field of ["website", "subject"]) {
+  for (const field of ["reference_number", "subject"]) {
     if ((formData.get(field) as string | null)?.trim()) return `honeypot "${field}" filled`;
   }
   // Absent when the page ran no JavaScript or nothing was typed; only a present,
@@ -32,13 +32,12 @@ export async function submitContactForm(
   _prevState: ContactFormState,
   formData: FormData
 ): Promise<ContactFormState> {
-  // Spam traps. A bot gets the same success reply as a person, so it learns
-  // nothing; nothing is saved and no email is sent.
+  // Spam traps. A trapped submission is still SAVED — archived, so it stays out
+  // of the admin inbox, with the reason prefixed — and sends no email. It is never
+  // discarded: on 2026-10-05 the operator's own test vanished into the old
+  // discard-on-honeypot branch, so a trap can catch a person. The sender gets
+  // the same success reply either way, so a bot learns nothing.
   const spamReason = detectSpam(formData);
-  if (spamReason) {
-    console.log(`[contact] spam rejected: ${spamReason}`);
-    return { success: true };
-  }
 
   const name = (formData.get("name") as string)?.trim();
   const email = (formData.get("email") as string)?.trim().toLowerCase();
@@ -66,12 +65,18 @@ export async function submitContactForm(
     name,
     email,
     phone: phone || "",
-    message,
+    message: spamReason ? `[Possible spam: ${spamReason}]\n\n${message}` : message,
+    archived: Boolean(spamReason),
   });
 
   if (error) {
     console.error("[contact] Failed to save submission:", error);
     return { error: "Something went wrong. Please try again." };
+  }
+
+  if (spamReason) {
+    console.log(`[contact] saved as possible spam (archived, no email): ${spamReason}`);
+    return { success: true };
   }
 
   // Send confirmation + admin notification after the response. `after` keeps the

@@ -13,7 +13,7 @@
 |---|---|---|---|---|---|
 | G-02 | Trusting the browser-side admin writes | Do the RLS policies on the 25 browser-written admin tables restrict writes to admins? Needs the migrations' policies read and the live ones confirmed. | Stéan | 2026-10-05 | an `EVIDENCE.md` line, either way |
 | G-03 | Knowing the live config is complete | Are `RESEND_FROM`, `ADMIN_EMAIL` and `CRON_SECRET` set in Vercel production? Since 2026-10-05 the code is safe either way (real fallback addresses; the cron refuses to run without its secret), but if `CRON_SECRET` is unset the daily cron has stopped — check `cron_runs` or set it. Needs Vercel access. | Stéan | 2026-10-05 | an `EVIDENCE.md` line per variable |
-| G-04 | Contact-form spam | Turnstile is decided (`DECISIONS.md`); it waits on a Cloudflare Turnstile site key and secret. | Stéan | 2026-10-05 | the keys are in the secrets channel and Vercel |
+| G-04 | Contact-form spam | Turnstile is decided (`DECISIONS.md`); it waits on a Cloudflare Turnstile site key and secret. Until then, honeypots and a fill-time check are the only guard, and a bot that passes them can still make the form send a confirmation email to any address it types. | Stéan | 2026-10-05 | the keys are in the secrets channel and Vercel |
 | G-07 | What `SUPABASE_DB` is | Nothing reads it — keep, rename, or drop it from the secrets channel? | Stéan | 2026-10-05 | a DECISIONS row |
 
 ## Closed

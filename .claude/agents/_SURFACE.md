@@ -44,6 +44,12 @@ Maps, advanced SEO, legal docs, Google Analytics, Resend.
 | `lib/email.ts` | Email sending, Resend first and SMTP as the fallback. |
 | `lib/cms/queries.ts` | Every read of the site's CMS content. |
 
+## Contact-form spam traps
+`lib/contact/actions.ts` `detectSpam`. A trapped submission is **saved archived, never
+discarded**, and sends no email — a trap that drops mail hides its own false positives. Honeypot
+names must match no autofill or password-manager field (`website` did). The fill-time clock starts
+at the first input, not on mount, because the server-rendered form takes typing before hydration.
+
 ## The schema channel
 **Narrow.** The only credential is the service-role key (`.env.local`, from `npm run
 secrets:pull`). It reaches PostgREST, so a known table can be read; it cannot read
