@@ -192,8 +192,7 @@ Promote    none | <section ref> → <suggested destination>
 - **No `config/site.ts` feature flag flips.** Turning a template feature on is a product decision
   and may need migrations that have never run against production.
 
-**The gate is red at `check:deadcode` on a known baseline** (`_SURFACE.md`, G-08). Every step
-before it must pass, and no knip/madge finding may name a file you touched.
+**The gate is green** (`_SURFACE.md`); any failure after your change is yours.
 
 Shared facts — the check gate, the danger census, the SSOTs — are in
 `.claude/agents/_SURFACE.md`.

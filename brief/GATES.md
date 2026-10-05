@@ -16,7 +16,6 @@
 | G-04 | Contact-form spam | Keep honeypot plus in-memory rate limit, or add CAPTCHA / a persistent limit? The form can mail arbitrary third parties. | Stéan | 2026-10-05 | a DECISIONS row |
 | G-05 | The open redirect | Restrict `/api/track/click` to own and allow-listed hosts, or remove it while campaigns are off? | Stéan | 2026-10-05 | a DECISIONS row |
 | G-06 | Live site details | Are the WhatsApp number and Google Maps URL in admin settings the real ones, and does DNS point at Vercel? (carried from `PROJECT_TODO.md`) | Stéan / Charl | 2026-10-05 | an `EVIDENCE.md` line |
-| G-08 | A green gate | After the dormant-code deletion, knip reports only 2 unused dependencies (`cmdk`, `framer-motion`) and madge is clean. Remove them with `npm uninstall cmdk framer-motion` (operator's terminal)? Until then `npm run check` is red at `check:deadcode`. | Stéan | 2026-10-05 | `npm run check` exits 0 |
 | G-07 | What `SUPABASE_DB` is | Nothing reads it — keep, rename, or drop it from the secrets channel? | Stéan | 2026-10-05 | a DECISIONS row |
 
 ## Closed
@@ -24,3 +23,4 @@
 | id | Closed | Answer |
 |---|---|---|
 | G-01 | 2026-10-05 | Deleted: every OFF feature's code removed (`DECISIONS.md`, 2026-10-05). |
+| G-08 | 2026-10-05 | Green: dormant code deleted, `cmdk` and `framer-motion` uninstalled; `npm run check` exits 0 with all four tier-0 slots passing. |
