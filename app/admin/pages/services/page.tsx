@@ -210,7 +210,7 @@ export default function ServicesPageEditor() {
         <CardContent className="space-y-6">
           {form.items.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              No services yet. Click "Add Service" to get started.
+              No services yet. Click &ldquo;Add Service&rdquo; to get started.
             </p>
           )}
           {form.items.map((item, i) => (

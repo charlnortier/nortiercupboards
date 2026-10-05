@@ -1,5 +1,6 @@
 import { generatePageMetadata } from "@/lib/seo/metadata";
 import { getSiteContent } from "@/lib/cms/queries";
+import type { ComponentProps } from "react";
 import { AboutContent } from "@/components/about/about-content";
 
 export async function generateMetadata() {
@@ -9,5 +10,5 @@ export async function generateMetadata() {
 export default async function AboutPage() {
   const content = await getSiteContent("about");
 
-  return <AboutContent content={content as any} />;
+  return <AboutContent content={content as ComponentProps<typeof AboutContent>["content"]} />;
 }
