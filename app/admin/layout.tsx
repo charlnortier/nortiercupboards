@@ -10,7 +10,7 @@ export default async function AdminLayout({
   const user = await getCurrentUser();
 
   if (user?.role !== "admin") {
-    redirect("/portal");
+    redirect("/");
   }
 
   return (

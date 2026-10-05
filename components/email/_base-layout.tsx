@@ -35,8 +35,6 @@ export const brand = {
     "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 
   siteUrl: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-  portalUrl: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/portal`,
-  unsubscribeBaseUrl: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/email/unsubscribe`,
 } as const;
 
 // ─── Shared Styles ────────────────────────────────────────
@@ -176,31 +174,17 @@ export const styles = {
 } as const;
 
 // ─── Helpers ──────────────────────────────────────────────
-export function formatCurrency(amount: number): string {
-  return `R ${amount.toLocaleString("en-ZA", { minimumFractionDigits: 0 })}`;
-}
-
-export function formatDate(date: string | Date): string {
-  return new Date(date).toLocaleDateString("en-ZA", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
-
 // ─── Base Layout Component ────────────────────────────────
 interface BaseLayoutProps {
   preview: string;
   children: React.ReactNode;
-  unsubscribeToken?: string;
-  showPortalLink?: boolean;
+  showSiteLink?: boolean;
 }
 
 export function BaseLayout({
   preview,
   children,
-  unsubscribeToken,
-  showPortalLink = true,
+  showSiteLink = true,
 }: BaseLayoutProps) {
   return (
     <Html>
@@ -234,12 +218,8 @@ export function BaseLayout({
           {/* Footer */}
           <Hr style={styles.hr} />
           <Section style={styles.footer}>
-            {showPortalLink && (
+            {showSiteLink && (
               <Text style={styles.footerText}>
-                <Link href={brand.portalUrl} style={styles.footerLink}>
-                  Open your portal
-                </Link>
-                {" · "}
                 <Link href={brand.siteUrl} style={styles.footerLink}>
                   Visit website
                 </Link>
@@ -248,16 +228,6 @@ export function BaseLayout({
             <Text style={styles.footerText}>
               {process.env.NEXT_PUBLIC_SITE_NAME || "Your Company"}
             </Text>
-            {unsubscribeToken && (
-              <Text style={styles.footerText}>
-                <Link
-                  href={`${brand.unsubscribeBaseUrl}?token=${unsubscribeToken}`}
-                  style={styles.footerLink}
-                >
-                  Unsubscribe from marketing emails
-                </Link>
-              </Text>
-            )}
           </Section>
         </Container>
       </Body>
@@ -278,23 +248,6 @@ export function CtaButton({
   return (
     <Section style={styles.ctaContainer}>
       <Link href={href} style={styles.ctaButton}>
-        {children}
-      </Link>
-    </Section>
-  );
-}
-
-/** Secondary outline button */
-export function SecondaryButton({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Section style={styles.ctaContainer}>
-      <Link href={href} style={styles.secondaryButton}>
         {children}
       </Link>
     </Section>

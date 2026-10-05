@@ -1,12 +1,7 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLocale } from "@/lib/locale";
-import { subscribeNewsletter } from "@/lib/newsletter/actions";
-import { isEnabled } from "@/config/features";
-import { Loader2, Send } from "lucide-react";
-import { toast } from "sonner";
 import type { FooterSection, SiteSettings } from "@/types/cms";
 
 interface FooterProps {
@@ -65,13 +60,6 @@ export function Footer({ sections, settings }: FooterProps) {
           ))}
         </div>
 
-        {/* Newsletter — only if feature enabled */}
-        {isEnabled("newsletter") && (
-          <div className="mt-12 border-t border-white/6 pt-8">
-            <NewsletterForm />
-          </div>
-        )}
-
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/6 py-6 md:flex-row">
           <span className="text-[13px] text-white/30">
             &copy; {new Date().getFullYear()} {settings.company_name}.{" "}
@@ -86,74 +74,5 @@ export function Footer({ sections, settings }: FooterProps) {
         </div>
       </div>
     </footer>
-  );
-}
-
-function NewsletterForm() {
-  const { t } = useLocale();
-  const [state, formAction, isPending] = useActionState(
-    subscribeNewsletter,
-    null
-  );
-  const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    if (state?.success) {
-      toast.success(
-        t({
-          en: "You're subscribed! We'll keep you in the loop.",
-          af: "Jy is ingeteken! Ons sal jou op hoogte hou.",
-        })
-      );
-      formRef.current?.reset();
-    }
-    if (state?.error) {
-      toast.error(state.error);
-    }
-  }, [state, t]);
-
-  return (
-    <div className="flex flex-col items-center gap-4 text-center">
-      <h3 className="text-sm font-semibold text-white/80">
-        {t({
-          en: "Stay in the loop",
-          af: "Bly op hoogte",
-        })}
-      </h3>
-      <p className="max-w-md text-sm text-white/40">
-        {t({
-          en: "Get tips, updates, and offers — straight to your inbox.",
-          af: "Kry wenke, opdaterings en aanbiedinge — reguit na jou inkassie.",
-        })}
-      </p>
-      <form
-        ref={formRef}
-        action={formAction}
-        className="flex w-full max-w-sm gap-2"
-      >
-        <input
-          type="email"
-          name="email"
-          required
-          placeholder={t({
-            en: "your@email.com",
-            af: "jou@epos.com",
-          })}
-          className="flex-1 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#C4A265]/30"
-        />
-        <button
-          type="submit"
-          disabled={isPending}
-          className="inline-flex items-center gap-2 rounded-md bg-[#C4A265] px-4 py-2 text-sm font-medium text-[#1B2A4A] transition-colors hover:bg-[#D4B87A] disabled:opacity-50"
-        >
-          {isPending ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            <Send className="size-4" />
-          )}
-          {t({ en: "Subscribe", af: "Teken in" })}
-        </button>
-      </form>
-    </div>
   );
 }

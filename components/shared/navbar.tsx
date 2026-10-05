@@ -4,10 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { NavbarAuthButton } from "@/components/shared/navbar-auth-button";
 import { useLocale } from "@/lib/locale";
-import { CartIcon } from "@/components/shop/cart-icon";
-import { siteConfig } from "@/config/site";
 import type { NavLink, SiteSettings } from "@/types/cms";
 
 interface NavbarProps {
@@ -55,8 +52,6 @@ export function Navbar({ links, settings }: NavbarProps) {
         {/* Desktop actions */}
         <div className="hidden items-center gap-2 md:flex">
           <ThemeToggle />
-          {siteConfig.features.shop && <CartIcon />}
-          <NavbarAuthButton />
           <Link href={settings.cta_url}>
             <button className="rounded-lg bg-[#C4A265] px-5 py-2.5 text-sm font-semibold text-[#1B2A4A] transition-all hover:bg-[#D4B87A] hover:-translate-y-px">
               {t(settings.cta_label)}
@@ -95,10 +90,8 @@ export function Navbar({ links, settings }: NavbarProps) {
             <div className="mt-4 flex items-center justify-between border-t border-[#C4A265]/10 pt-4">
               <div className="flex items-center gap-1">
                 <ThemeToggle />
-                {siteConfig.features.shop && <CartIcon />}
               </div>
               <div className="flex items-center gap-2">
-                <NavbarAuthButton />
                 <Link href={settings.cta_url} onClick={() => setMobileOpen(false)}>
                   <button className="rounded-lg bg-[#C4A265] px-4 py-2 text-sm font-semibold text-[#1B2A4A]">
                     {t(settings.cta_label)}

@@ -42,7 +42,6 @@ export interface SiteSettings {
   social_linkedin?: string;
   social_youtube?: string;
   social_tiktok?: string;
-  facebook_pixel_id?: string;
 }
 
 // ─── Navigation ───────────────────────────────────────────
@@ -55,7 +54,7 @@ export interface NavLink {
   is_active: boolean;
 }
 
-export interface FooterLink {
+interface FooterLink {
   label: LocalizedString;
   href: string;
 }
@@ -103,17 +102,6 @@ export interface PageSeo {
   noindex: boolean;
   priority: number | null;
   changefreq: string | null;
-}
-
-// ─── Section Meta (used by section-header-form) ─────────
-
-export interface SectionMeta {
-  heading: LocalizedString;
-  subheading: LocalizedString;
-  cta_label?: LocalizedString;
-  cta_url?: string;
-  cta_icon?: string;
-  footer_note?: LocalizedString;
 }
 
 // ─── Aggregated Layout Data ───────────────────────────────

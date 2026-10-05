@@ -56,7 +56,7 @@ function getStaticPages(seoMap: SeoMap): MetadataRoute.Sitemap {
     }));
 }
 
-/** Dynamic content entries (portfolio, blog, shop, courses) */
+/** Dynamic content entries (portfolio) */
 async function getDynamicEntries(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any,
@@ -75,56 +75,6 @@ async function getDynamicEntries(
       indexDefaults: { priority: 0.8, changeFrequency: "monthly" },
       itemFreq: "monthly",
       itemPriority: 0.6,
-    });
-  }
-
-  if (isEnabled("blog")) {
-    await addCollectionEntries(entries, supabase, seoMap, {
-      table: "blog_posts",
-      basePath: "/blog",
-      seoKey: "blog",
-      slugField: "slug",
-      dateField: "published_at",
-      filter: (q) => q.select("slug, published_at").eq("is_published", true),
-      indexDefaults: { priority: 0.8, changeFrequency: "weekly" },
-      itemFreq: "monthly",
-      itemPriority: 0.6,
-    });
-  }
-
-  if (isEnabled("booking")) {
-    entries.push({
-      url: `${BASE_URL}/book`,
-      lastModified: new Date(),
-      ...seoFor(seoMap, "book", { priority: 0.8, changeFrequency: "monthly" }),
-    });
-  }
-
-  if (isEnabled("shop")) {
-    await addCollectionEntries(entries, supabase, seoMap, {
-      table: "products",
-      basePath: "/shop",
-      seoKey: "shop",
-      slugField: "slug",
-      dateField: "updated_at",
-      filter: (q) => q.select("slug, updated_at").eq("is_active", true).is("deleted_at", null),
-      indexDefaults: { priority: 0.9, changeFrequency: "weekly" },
-      itemFreq: "weekly",
-      itemPriority: 0.7,
-    });
-  }
-
-  if (isEnabled("lms")) {
-    await addCollectionEntries(entries, supabase, seoMap, {
-      table: "courses",
-      basePath: "/courses",
-      seoKey: "courses",
-      slugField: "slug",
-      dateField: "updated_at",
-      filter: (q) => q.select("slug, updated_at").eq("is_published", true).is("deleted_at", null),
-      indexDefaults: { priority: 0.8, changeFrequency: "weekly" },
-      itemFreq: "weekly",
-      itemPriority: 0.7,
     });
   }
 

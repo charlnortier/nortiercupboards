@@ -48,11 +48,7 @@ const PAGE_LABELS: Record<string, string> = {
   faq: "FAQ",
   terms: "Terms",
   privacy: "Privacy",
-  blog: "Blog",
   portfolio: "Portfolio",
-  shop: "Shop",
-  book: "Booking",
-  courses: "Courses",
 };
 
 function charClass(len: number, warn: number, max: number): string {
@@ -216,7 +212,6 @@ export function SeoEditSheet({ page, open, onOpenChange }: SeoEditSheetProps) {
                   <SelectContent>
                     <SelectItem value="website">Website</SelectItem>
                     <SelectItem value="article">Article</SelectItem>
-                    <SelectItem value="product">Product</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

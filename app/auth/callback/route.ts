@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type");
-  const next = searchParams.get("next") ?? "/portal";
+  const next = searchParams.get("next") ?? "/admin";
 
   const supabase = await createClient();
 

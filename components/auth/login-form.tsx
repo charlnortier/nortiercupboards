@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { isEnabled } from "@/config/features";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -65,12 +64,10 @@ export function LoginForm() {
 
       if (role === "admin") {
         router.push("/admin");
-      } else if (role === "customer") {
-        router.push("/portal");
       } else {
-        // Unknown role — sign out and show error
+        // Not an admin — sign out and show error
         await supabase.auth.signOut();
-        setError("Your account does not have an assigned role. Please contact support.");
+        setError("This login is for site administrators only.");
         setIsPending(false);
       }
     } catch {
@@ -78,8 +75,6 @@ export function LoginForm() {
       setIsPending(false);
     }
   }
-
-  const showRegisterLink = isEnabled("customerAuth");
 
   return (
     <Card>
@@ -161,15 +156,6 @@ export function LoginForm() {
             )}
           </Button>
         </form>
-
-        {showRegisterLink && (
-          <p className="mt-4 text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-foreground underline hover:no-underline">
-              Create one
-            </Link>
-          </p>
-        )}
       </CardContent>
     </Card>
   );

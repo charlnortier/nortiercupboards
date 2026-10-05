@@ -34,7 +34,7 @@ function ensureCleanup() {
 }
 
 interface RateLimitOptions {
-  /** Unique prefix for this limiter (e.g., "contact", "newsletter") */
+  /** Unique prefix for this limiter (e.g., "contact", "password_reset") */
   prefix: string;
   /** Max requests allowed in the window */
   limit: number;

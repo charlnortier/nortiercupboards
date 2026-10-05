@@ -21,5 +21,6 @@
 | 2026-10-05 | **The repo stays on the client's GitHub account (`charlnortier`); the operator works as a collaborator.** |
 | 2026-10-05 | **Token economy tier 2 is installed (`context-budget` hook and its check, from pleks); tier 1 (statusline) is not** — it is CLI-only and this project is worked in VS Code. |
 | 2026-10-05 | **The pre-adoption brief is filed and the remainder retired.** `PROJECT_BRIEF`, `TECHNICAL_DESIGN`, brand, logo and mockups moved into `brief/`; the executed build plan, its superseded SQL, the duplicate logo PNG and `PROJECT_TODO.md` deleted (in git history before this commit). Supersedes `project-brief/`. |
-| 2026-10-05 | **Reachable dormant code is recorded as a gate, not fixed now.** See `GATES.md` G-01. |
+| 2026-10-05 | ~~**Reachable dormant code is recorded as a gate, not fixed now.**~~ Superseded below. |
 | 2026-10-05 | **The gate also runs knip (`check:deadcode`) and madge (`check:cycles`), filling canon's four tier-0 slots; there is still no build step.** Canon needs the slots wired, not passing, and both are red on existing code. Settling that is G-08. Supersedes the "knip, madge … stay out" row. |
+| 2026-10-05 | **Every feature not active today will never be: their code is deleted, their migrations and production tables are kept.** Operator ruling; closes G-01. Non-admins who sign in are signed out; signed-in users on `/login` go to `/admin`; the "Open your portal" email link is gone. Data leftovers (unused `page_seo`, `email_templates` rows, unused env vars) are not touched. |

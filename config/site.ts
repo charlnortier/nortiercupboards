@@ -6,13 +6,11 @@
  * generates this file from the project manifest.
  */
 
-export type Tier = "brochure" | "business" | "commerce";
-
 export interface SiteConfig {
   name: string;
   description: string;
   domain: string;
-  tier: Tier;
+  tier: "brochure";
   locale: {
     default: "en" | "af";
     supported: ("en" | "af")[];
@@ -30,37 +28,15 @@ export interface SiteConfig {
     };
   };
   features: {
-    blog: boolean;
     portfolio: boolean;
-    booking: boolean;
-    shop: boolean;
-    lms: boolean;
-    newsletter: boolean;
     i18n: boolean;
-    customerAuth: boolean;
-    portal: boolean;
     darkMode: boolean;
     whatsapp: boolean;
     googleMaps: boolean;
-    serviceAreaPages: boolean;
     seoAdvanced: boolean;
-    facebookPixel: boolean;
-    googleCalendar: boolean;
-    sessionCredits: boolean;
-    billing: boolean;
     legalDocs: boolean;
-    clientOnboarding: boolean;
-    emailCampaigns: boolean;
-    dripEmails: boolean;
-    hybridPackages: boolean;
-    multiCurrency: boolean;
-    coupons: boolean;
-    gifts: boolean;
-    clientImport: boolean;
-    microsoftGraph: boolean;
   };
   integrations: {
-    paystack: boolean;
     googleAnalytics: boolean;
     resend: boolean;
   };
@@ -72,25 +48,6 @@ export interface SiteConfig {
     faq: boolean;
     terms: boolean;
     privacy: boolean;
-  };
-  /** Booking cancel/reschedule thresholds. Only used when features.booking is true. */
-  bookingPolicy?: {
-    cancelNoticeHours: number;
-    maxReschedules: number;
-    rescheduleNoticeHours: number;
-    lateCancelForfeit: boolean;
-    allowSameDayBooking: boolean;
-  };
-  /** Which optional profile fields to show. Only used when features.customerAuth is true. */
-  clientFields?: {
-    dateOfBirth: boolean;
-    gender: boolean;
-    address: boolean;
-    relationshipStatus: boolean;
-    emergencyContact: boolean;
-    referralSource: boolean;
-    medicalInfo: boolean;
-    companyName: boolean;
   };
 }
 
@@ -110,37 +67,15 @@ export const siteConfig: SiteConfig = {
     font: { heading: "Plus Jakarta Sans", body: "Inter" },
   },
   features: {
-    blog: false,
     portfolio: true,
-    booking: false,
-    shop: false,
-    lms: false,
-    newsletter: false,
     i18n: true,
-    customerAuth: false,
-    portal: false,
     darkMode: true,
     whatsapp: true,
     googleMaps: true,
-    serviceAreaPages: false,
     seoAdvanced: true,
-    facebookPixel: false,
-    googleCalendar: false,
-    sessionCredits: false,
-    billing: false,
     legalDocs: true,
-    clientOnboarding: false,
-    emailCampaigns: false,
-    dripEmails: false,
-    hybridPackages: false,
-    multiCurrency: false,
-    coupons: false,
-    gifts: false,
-    clientImport: false,
-    microsoftGraph: false,
   },
   integrations: {
-    paystack: false,
     googleAnalytics: true,
     resend: true,
   },

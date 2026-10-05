@@ -2,15 +2,11 @@ import Link from "next/link";
 import {
   Home,
   Navigation,
-  FileText,
   Settings,
   ChevronRight,
   Mail,
-  Newspaper,
   Image,
   MessageSquare,
-  ShoppingBag,
-  CalendarDays,
   Activity,
   Clock,
   CheckCircle2,
@@ -56,12 +52,6 @@ export default async function AdminDashboard() {
   const statCards: StatCard[] = [
     { label: "Messages", value: stats.contactCount, icon: MessageSquare },
   ];
-  if (isEnabled("newsletter")) {
-    statCards.push({ label: "Subscribers", value: stats.newsletterCount, icon: Newspaper });
-  }
-  if (isEnabled("blog")) {
-    statCards.push({ label: "Blog Posts", value: stats.blogCount, icon: FileText });
-  }
   if (isEnabled("portfolio")) {
     statCards.push({ label: "Portfolio", value: stats.portfolioCount, icon: Image });
   }
@@ -72,17 +62,8 @@ export default async function AdminDashboard() {
     { href: "/admin/contact", label: "Messages", description: "View contact form submissions", icon: MessageSquare },
     { href: "/admin/navigation", label: "Navigation", description: "Manage nav links and footer", icon: Navigation },
   ];
-  if (isEnabled("blog")) {
-    quickLinks.push({ href: "/admin/blog", label: "Blog Posts", description: "Create and manage articles", icon: FileText });
-  }
   if (isEnabled("portfolio")) {
     quickLinks.push({ href: "/admin/portfolio", label: "Portfolio", description: "Showcase completed work", icon: Image });
-  }
-  if (isEnabled("shop")) {
-    quickLinks.push({ href: "/admin/shop", label: "Shop", description: "Products, orders, settings", icon: ShoppingBag });
-  }
-  if (isEnabled("booking")) {
-    quickLinks.push({ href: "/admin/booking", label: "Booking", description: "Services and appointments", icon: CalendarDays });
   }
   quickLinks.push(
     { href: "/admin/settings", label: "Site Settings", description: "Business info, contact, social", icon: Settings },

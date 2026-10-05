@@ -21,7 +21,7 @@ export default function AdminNewMessage({
   return (
     <BaseLayout
       preview={`New message from ${clientName}`}
-      showPortalLink={false}
+      showSiteLink={false}
     >
       <Text style={styles.h1}>New message from {clientName}</Text>
 

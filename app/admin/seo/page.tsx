@@ -33,8 +33,7 @@ interface PageSeoRow {
 
 /** Display order — nav pages first, legal at the bottom. */
 const PAGE_ORDER: string[] = [
-  "home", "about", "services", "portfolio", "blog",
-  "shop", "book", "courses", "contact", "faq",
+  "home", "about", "services", "portfolio", "contact", "faq",
   "terms", "privacy",
 ];
 
@@ -46,11 +45,7 @@ const PAGE_LABELS: Record<string, string> = {
   faq: "FAQ",
   terms: "Terms",
   privacy: "Privacy",
-  blog: "Blog",
   portfolio: "Portfolio",
-  shop: "Shop",
-  book: "Booking",
-  courses: "Courses",
 };
 
 type FilterType = "all" | "missing_image" | "missing_description" | "noindex";

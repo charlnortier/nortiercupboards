@@ -9,8 +9,8 @@
  * Admins:  8 hours inactivity on /admin routes (separate cookie below).
  */
 
-/** Client inactivity timeout: 30 days */
-export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+/** Session cookie lifetime: 30 days */
+const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 
 /**
  * Admin-specific inactivity timeout (8 hours).

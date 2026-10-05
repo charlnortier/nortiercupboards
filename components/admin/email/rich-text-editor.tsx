@@ -20,11 +20,10 @@ import {
 
 const DEFAULT_VARIABLE_CHIPS: VariableChip[] = [
   { key: "firstName", label: "First Name", description: "Client\u2019s first name (falls back to \u2018there\u2019)" },
-  { key: "unsubscribeUrl", label: "Unsubscribe URL", description: "One-click unsubscribe link" },
   { key: "passwordResetUrl", label: "Set Password Link", description: "Generates a unique login/password setup link per client. Use in CTA URL or body." },
 ];
 
-export interface VariableChip {
+interface VariableChip {
   key: string;
   label: string;
   description?: string;

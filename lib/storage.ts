@@ -52,26 +52,3 @@ export async function uploadFile(
 
   return { url: publicUrl };
 }
-
-/**
- * Delete a file from Supabase Storage by its public URL.
- * Auto-detects the bucket from the URL path.
- */
-export async function deleteFile(
-  publicUrl: string
-): Promise<{ error?: string }> {
-  const denied = await adminOrError();
-  if (denied) return { error: denied };
-
-  const supabase = createAdminClient();
-  // Extract bucket and path from: .../storage/v1/object/public/{bucket}/{path}
-  const match = publicUrl.match(
-    /\/storage\/v1\/object\/public\/([^/]+)\/(.+)$/
-  );
-  if (!match) return { error: "Invalid storage URL" };
-
-  const [, bucket, filePath] = match;
-  const { error } = await supabase.storage.from(bucket).remove([filePath]);
-  if (error) return { error: error.message };
-  return {};
-}

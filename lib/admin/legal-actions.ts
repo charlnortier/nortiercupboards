@@ -63,28 +63,3 @@ export async function upsertLegalDocument(doc: {
   revalidatePath("/admin/legal");
   return {};
 }
-
-export async function deleteLegalDocument(
-  id: string
-): Promise<{ error?: string }> {
-  await ensureAdmin();
-  const admin = createAdminClient();
-  const { error } = await admin
-    .from("legal_documents")
-    .update({ active: false })
-    .eq("id", id);
-  if (error) return { error: error.message };
-  revalidatePath("/admin/legal");
-  return {};
-}
-
-export async function getDocumentAcceptances(documentId: string) {
-  await ensureAdmin();
-  const admin = createAdminClient();
-  const { data } = await admin
-    .from("document_acceptances")
-    .select("*, user:user_profiles(full_name, email)")
-    .eq("document_id", documentId)
-    .order("accepted_at", { ascending: false });
-  return data ?? [];
-}

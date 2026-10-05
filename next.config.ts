@@ -22,6 +22,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // The client portal was deleted on 2026-10-05, but contact confirmation
+  // emails sent before then link to /portal. Send those readers home.
+  async redirects() {
+    return [
+      { source: "/portal", destination: "/", permanent: true },
+      { source: "/portal/:path*", destination: "/", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

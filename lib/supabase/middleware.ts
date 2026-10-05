@@ -5,7 +5,6 @@ import {
   ADMIN_INACTIVITY_SECONDS,
   ADMIN_ACTIVITY_COOKIE,
 } from "./config";
-import { isEnabled } from "@/config/features";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -75,16 +74,15 @@ export async function updateSession(request: NextRequest) {
     );
   }
 
-  // Authenticated users visiting auth pages → send to /portal
-  // (Portal layout will redirect admins to /admin based on DB role)
+  // Authenticated users visiting auth pages → send to /admin
+  // (Admin layout bounces non-admins to / based on DB role)
   if (
     user &&
     (pathname.startsWith("/login") ||
-      pathname.startsWith("/register") ||
       pathname.startsWith("/forgot-password"))
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = "/portal";
+    url.pathname = "/admin";
     url.search = "";
     return NextResponse.redirect(url);
   }
@@ -97,24 +95,9 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Portal protection — only when customerAuth is enabled
-  if (!user && pathname.startsWith("/portal")) {
-    if (isEnabled("customerAuth")) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      url.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(url);
-    }
-    // customerAuth disabled — portal routes don't exist, redirect home
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
-
   // Role-based routing is handled by layouts (not middleware)
   // to avoid JWT/DB role disagreements causing redirect loops.
-  // See: app/portal/layout.tsx (redirects admins → /admin)
-  // See: app/admin/layout.tsx (redirects non-admins → /portal)
+  // See: app/admin/layout.tsx (redirects non-admins → /)
 
   return supabaseResponse;
 }

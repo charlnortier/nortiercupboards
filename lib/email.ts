@@ -14,34 +14,14 @@ import type { EmailTemplate } from "./email-types";
 // Templates — lazy imports to keep bundle small
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- each template has unique props
 const templates: Record<EmailTemplate, () => Promise<{ default: React.ComponentType<any> }>> = {
-  welcome: () => import("@/components/email/welcome"),
-  booking_confirmed: () => import("@/components/email/booking-confirmed"),
-  booking_reminder_24h: () => import("@/components/email/booking-reminder-24h"),
-  booking_reminder_1h: () => import("@/components/email/booking-reminder-1h"),
-  booking_cancellation: () => import("@/components/email/booking-cancellation"),
-  admin_new_booking: () => import("@/components/email/admin-new-booking"),
-  newsletter_welcome: () => import("@/components/email/newsletter-welcome"),
   contact_form_confirmation: () => import("@/components/email/contact-form-confirmation"),
-  order_confirmation: () => import("@/components/email/order-confirmation"),
-  admin_new_order: () => import("@/components/email/admin-new-order"),
-  enrollment_confirmation: () => import("@/components/email/enrollment-confirmation"),
   admin_new_message: () => import("@/components/email/admin-new-message"),
 };
 
 // Subject line generators
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- subject generators access varied props
 const subjects: Record<EmailTemplate, (props: Record<string, any>) => string> = {
-  welcome: () => "Welcome! Your account is ready",
-  booking_confirmed: (p) => `Booking confirmed — ${p.bookingType} on ${p.date}`,
-  booking_reminder_24h: (p) => `Reminder: ${p.bookingType} tomorrow at ${p.time}`,
-  booking_reminder_1h: (p) => `Starting soon: ${p.bookingType} at ${p.time}`,
-  booking_cancellation: (p) => `Booking cancelled — ${p.bookingType} on ${p.date}`,
-  admin_new_booking: (p) => `New booking — ${p.bookingType} on ${p.date} at ${p.time}`,
-  newsletter_welcome: () => "Welcome to our newsletter!",
   contact_form_confirmation: (p) => `Thanks for reaching out, ${p.senderName}!`,
-  order_confirmation: (p) => `Order Confirmed — ${p.orderReference}`,
-  admin_new_order: (p) => `New Order — ${p.orderReference} (${p.total})`,
-  enrollment_confirmation: (p) => `You're enrolled — ${p.courseName}`,
   admin_new_message: (p) => `New message from ${p.clientName}`,
 };
 
@@ -58,7 +38,6 @@ interface SendEmailOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- template props vary per template
   props: Record<string, any>;
   replyTo?: string;
-  unsubscribeToken?: string;
 }
 
 export async function sendEmail({
@@ -66,20 +45,13 @@ export async function sendEmail({
   template,
   props,
   replyTo,
-  unsubscribeToken,
 }: SendEmailOptions) {
   try {
     const mod = await templates[template]();
     const EmailComponent = mod.default;
-    const html = await render(createElement(EmailComponent, { ...props, unsubscribeToken }));
+    const html = await render(createElement(EmailComponent, props));
     const subject = subjects[template](props);
     const recipients = Array.isArray(to) ? to : [to];
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
-
-    const headers: Record<string, string> = {};
-    if (unsubscribeToken) {
-      headers["List-Unsubscribe"] = `<${siteUrl}/api/email/unsubscribe?token=${unsubscribeToken}>`;
-    }
 
     // Try Resend first
     if (process.env.RESEND_API_KEY) {
@@ -90,7 +62,6 @@ export async function sendEmail({
         subject,
         html,
         replyTo,
-        headers: Object.keys(headers).length > 0 ? headers : undefined,
       });
 
       if (error) {
@@ -124,7 +95,6 @@ export async function sendEmail({
         subject,
         html,
         replyTo,
-        headers,
       });
 
       console.log(`[Email] Sent ${template} to ${to} via SMTP`);

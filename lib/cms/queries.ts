@@ -9,7 +9,7 @@ import type {
   PageSeo,
   HomepageSection,
 } from "@/types/cms";
-import type { BlogPost, BlogCategory, PortfolioItem } from "@/types";
+import type { PortfolioItem } from "@/types";
 
 const defaultSiteSettings: SiteSettings = {
   logo_text: siteConfig.name,
@@ -125,101 +125,6 @@ export async function getPageSeo(pageKey: string): Promise<PageSeo | null> {
     .eq("page_key", pageKey)
     .single();
   return (data as PageSeo) ?? null;
-}
-
-// ---------- Blog ----------
-
-export async function getBlogCategories(): Promise<BlogCategory[]> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("blog_categories")
-    .select("*")
-    .order("name->en");
-  return (data as BlogCategory[]) ?? [];
-}
-
-export async function getPublishedBlogPosts(options?: {
-  categorySlug?: string;
-  page?: number;
-  perPage?: number;
-}): Promise<{ posts: BlogPost[]; total: number }> {
-  const supabase = await createClient();
-  const page = options?.page ?? 1;
-  const perPage = options?.perPage ?? 12;
-  const from = (page - 1) * perPage;
-  const to = from + perPage - 1;
-
-  let categoryId: string | undefined;
-  if (options?.categorySlug) {
-    const { data: cat } = await supabase
-      .from("blog_categories")
-      .select("id")
-      .eq("slug", options.categorySlug)
-      .single();
-    if (cat) categoryId = cat.id;
-  }
-
-  let query = supabase
-    .from("blog_posts")
-    .select("*", { count: "exact" })
-    .eq("is_published", true)
-    .is("deleted_at", null)
-    .order("published_at", { ascending: false })
-    .range(from, to);
-
-  if (categoryId) {
-    query = query.eq("category_id", categoryId);
-  }
-
-  const { data, count } = await query;
-  return { posts: (data as BlogPost[]) ?? [], total: count ?? 0 };
-}
-
-export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("blog_posts")
-    .select("*")
-    .eq("slug", slug)
-    .eq("is_published", true)
-    .is("deleted_at", null)
-    .single();
-  return (data as BlogPost) ?? null;
-}
-
-export async function getRelatedBlogPosts(
-  postId: string,
-  categoryId: string | null,
-  limit = 3
-): Promise<BlogPost[]> {
-  const supabase = await createClient();
-  let query = supabase
-    .from("blog_posts")
-    .select("*")
-    .eq("is_published", true)
-    .is("deleted_at", null)
-    .neq("id", postId)
-    .order("published_at", { ascending: false })
-    .limit(limit);
-
-  if (categoryId) {
-    query = query.eq("category_id", categoryId);
-  }
-
-  const { data } = await query;
-  return (data as BlogPost[]) ?? [];
-}
-
-/** Get all blog posts for RSS (no pagination) */
-export async function getAllPublishedBlogPosts(): Promise<BlogPost[]> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("blog_posts")
-    .select("*")
-    .eq("is_published", true)
-    .is("deleted_at", null)
-    .order("published_at", { ascending: false });
-  return (data as BlogPost[]) ?? [];
 }
 
 // ---------- Portfolio ----------

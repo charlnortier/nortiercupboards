@@ -45,9 +45,9 @@
 - **Live features (config/site.ts, tier `brochure`): portfolio, i18n, darkMode, whatsapp,
   googleMaps, seoAdvanced, legalDocs, googleAnalytics, resend. Everything else is off.** — *source:
   config/site.ts:113-153*
-- **Disabled features are still routable:** `/shop`, `/blog`, `/book`, `/courses`, `/api/checkout`,
-  `/api/booking/*`, `/api/lms/checkout`, `/api/webhooks/paystack`, and their server actions, carry no
-  flag check. — *source: survey, grounder §4 and census §B*
+- **The disabled features' code was deleted on 2026-10-05 (141 files); before that their routes and
+  server actions were reachable with no flag check.** Their tables remain in production, empty. —
+  *source: survey, grounder §4 and census §B; the prune commit*
 - **One cron job: `/api/cron/daily` at 06:00 UTC; 3 of its 7 tasks run live (contact archive at 90
   days, sitemap ping, cron-run cleanup). It requires `CRON_SECRET` only if that variable is set.** —
   *source: vercel.json; app/api/cron/daily/route.ts:9; survey, census §C*

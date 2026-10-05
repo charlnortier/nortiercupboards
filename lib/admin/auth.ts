@@ -4,7 +4,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 
-export class AdminAuthError extends Error {
+class AdminAuthError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "AdminAuthError";

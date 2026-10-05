@@ -7,7 +7,7 @@
  * Falls back gracefully if template not found (returns null).
  *
  * Usage:
- *   const email = await renderEmail("booking_confirmation", {
+ *   const email = await renderEmail("password_reset", {
  *     clientName: "John",
  *     sessionType: "Consultation",
  *     date: "Monday, 3 March 2026",

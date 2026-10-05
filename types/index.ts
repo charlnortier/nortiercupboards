@@ -5,8 +5,6 @@
 
 // ─── Auth & Users ─────────────────────────────────────────
 
-export type UserRole = "admin" | "customer";
-
 export interface UserProfile {
   id: string;
   role: string;
@@ -48,43 +46,6 @@ export interface ContactSubmission {
   updated_at: string;
 }
 
-// ─── Newsletter ───────────────────────────────────────────
-
-export interface NewsletterSubscriber {
-  id: string;
-  email: string;
-  name: string | null;
-  source: string;
-  deleted_at: string | null;
-  created_at: string;
-}
-
-// ─── Blog ─────────────────────────────────────────────────
-
-export interface BlogPost {
-  id: string;
-  slug: string;
-  title: LocalizedString;
-  excerpt: LocalizedString | null;
-  content: LocalizedString | null;
-  author: string;
-  category_id: string | null;
-  tags: string[];
-  featured_image_url: string | null;
-  is_published: boolean;
-  published_at: string | null;
-  deleted_at: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface BlogCategory {
-  id: string;
-  name: LocalizedString;
-  slug: string;
-  description: LocalizedString | null;
-}
-
 // ─── Portfolio ────────────────────────────────────────────
 
 export interface PortfolioItem {
@@ -105,107 +66,6 @@ export interface PortfolioItem {
   display_order: number;
   created_at: string;
   updated_at: string;
-}
-
-// ─── Booking ──────────────────────────────────────────────
-
-export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled" | "no_show";
-
-export interface BookingService {
-  id: string;
-  name: LocalizedString;
-  description: LocalizedString | null;
-  duration_minutes: number;
-  buffer_minutes: number;
-  price_cents: number;
-  cancellation_cutoff_hours: number;
-  max_advance_days: number;
-  is_active: boolean;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface Booking {
-  id: string;
-  user_id: string | null;
-  service_id: string;
-  client_name: string;
-  client_email: string;
-  client_phone: string;
-  date: string;
-  start_time: string;
-  end_time: string;
-  status: BookingStatus;
-  notes: string | null;
-  client_notes: string | null;
-  admin_notes: string | null;
-  meeting_url: string | null;
-  google_calendar_event_id: string | null;
-  confirmation_token: string;
-  reminder_sent_at: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-// ─── Shop ─────────────────────────────────────────────────
-
-export type OrderStatus = "pending" | "paid" | "fulfilled" | "cancelled";
-
-export interface Product {
-  id: string;
-  name: LocalizedString;
-  slug: string;
-  description: LocalizedString | null;
-  price_cents: number;
-  images: string[];
-  category_id: string | null;
-  stock_quantity: number;
-  is_active: boolean;
-  deleted_at: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface ProductCategory {
-  id: string;
-  name: LocalizedString;
-  slug: string;
-  image: string | null;
-  is_active: boolean;
-  deleted_at: string | null;
-}
-
-export interface Order {
-  id: string;
-  user_id: string | null;
-  email: string;
-  status: OrderStatus;
-  total_cents: number;
-  subtotal_cents: number;
-  shipping_cents: number;
-  tax_cents: number;
-  items: OrderItem[];
-  shipping: ShippingAddress;
-  payment_reference: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface OrderItem {
-  product_id: string;
-  name: string;
-  price_cents: number;
-  quantity: number;
-}
-
-export interface ShippingAddress {
-  name: string;
-  address_line_1: string;
-  address_line_2?: string;
-  city: string;
-  province: string;
-  postal_code: string;
-  phone: string;
 }
 
 // ─── Activity Log ─────────────────────────────────────────

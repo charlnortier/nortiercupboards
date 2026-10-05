@@ -58,8 +58,8 @@ gate, then a commit.
 
 A brochure site for Nortier Cupboards (custom cupboards, Paarl) at `nortiercupboards.co.za`, built
 on the Yoros client template: Next 16, Supabase, Resend, Vercel. Its job is turning visitors into
-contact-form leads. Most template features are switched off in `config/site.ts` but still in the
-tree, and still routable (`brief/EVIDENCE.md`, "The live system").
+contact-form leads. The template's other features (booking, shop, LMS, blog, portal, payments,
+campaigns) were deleted on 2026-10-05 and will not return; their tables stay in production, empty.
 
 | System | Reach it by | Note |
 |---|---|---|
@@ -205,6 +205,7 @@ stop.
 **Gotchas:**
 1. Two site-URL env vars (`NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SITE_URL`) for one concept; ~25
    copy-pasted fallbacks.
-2. Two money formatters (`lib/shop/format.ts`, `lib/utils.ts` `formatCents`) and no date helper.
+2. No date helper: dates are formatted inline with `toLocaleDateString("en-ZA")`, and two admin sites
+   use the browser's locale.
 3. 25 admin files write from the browser client, so RLS is their only control — unexamined.
 4. The contact form's rate limit is in memory, per Vercel instance — not a real limit.

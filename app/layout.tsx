@@ -6,9 +6,7 @@ import { LocaleProvider } from "@/lib/locale";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
-import { isEnabled } from "@/config/features";
 import { CookieConsent } from "@/components/shared/cookie-consent";
-import { FacebookPixel } from "@/components/shared/facebook-pixel";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -84,9 +82,6 @@ export default function RootLayout({
             </TooltipProvider>
             <Toaster />
             <CookieConsent />
-            {isEnabled("facebookPixel") && process.env.NEXT_PUBLIC_FB_PIXEL_ID && (
-              <FacebookPixel pixelId={process.env.NEXT_PUBLIC_FB_PIXEL_ID} />
-            )}
           </LocaleProvider>
         </ThemeProvider>
       </body>

@@ -59,9 +59,3 @@ export function CookieConsent() {
     </div>
   );
 }
-
-/** Check if cookie consent has been given */
-export function hasConsent(): boolean {
-  if (globalThis.localStorage === undefined) return false;
-  return globalThis.localStorage.getItem(CONSENT_KEY) === "accepted";
-}

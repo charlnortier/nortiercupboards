@@ -28,14 +28,12 @@ There is no CI and no test suite.
 | **DDL** | 26 files in `supabase/migrations/` and `scripts/setup-db.sh`, which runs `supabase db push`, `db reset` or `psql`. Neither the supabase CLI nor psql is installed here, so how DDL actually reached production is **unknown** — every migration's tables exist there, but the migration history is not readable. bash-gate asks on all three. `supabase/seed.sql` deletes nav, footer and FAQ rows before reinserting. |
 
 ## The template underneath
-Scaffolded from the Yoros client template. `config/site.ts` sets tier `brochure` and most of the
-template's features OFF: booking, shop, LMS, blog, newsletter, customer auth, portal, billing,
-campaigns, Paystack. **Their code, routes, admin pages and migrations are still in the tree, and still reachable**:
-no public page or API route checks its flag, and **a flag never disables a server action** — any
-action a built component imports keeps a public endpoint. "Dormant" means no live UI, not
-unreachable. Their tables exist in production and are empty.
-Code under a disabled feature is not live behaviour — check `isEnabled()` (`config/features.ts`)
-before reasoning about any of it. On: portfolio, i18n (`en`/`af`), dark mode, WhatsApp, Google
+Scaffolded from the Yoros client template. Every feature that was OFF — booking, shop, LMS, blog,
+newsletter, customer auth, portal, billing, campaigns, Paystack and the rest — was **deleted** on
+2026-10-05 by operator ruling and will never return; do not rebuild any of it. Their migrations and
+(empty) production tables remain, untouched. **A feature flag never disables a server action** — a
+lesson from before the deletion that still governs any new flag. **Deleting a route breaks links already in the wild** — sent emails above all: `/portal` kept a redirect in `next.config.ts` for exactly that reason. `config/site.ts` lists only live
+features: portfolio, i18n (`en`/`af`), dark mode, WhatsApp, Google
 Maps, advanced SEO, legal docs, Google Analytics, Resend.
 
 ## SSOTs
