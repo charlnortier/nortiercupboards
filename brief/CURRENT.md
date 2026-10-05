@@ -9,7 +9,7 @@
 - Adoption: brief filled (EVIDENCE from the Phase 1 survey), pre-adoption docs filed, CLAUDE.md, gate widened (typecheck, brief, claude-md, context-budget), agents' surfaces updated.
 - `5d8c906` storage actions require admin; `f6e9d83` lint errors cleared. Both walker-reviewed (proceed).
 
-**Next action** — push `main` (the operator's call: it deploys the storage fix), then work the gates in `GATES.md`, G-01 first.
+**Next action** — the gate is red at `check:deadcode` on pre-existing template code (G-08, operator's call); then the other gates in `GATES.md`, G-01 first. Pushed through `00cb3fa`; tier-0 slots wired after.
 
 **Decided mid-build, not yet in DECISIONS.md** — nothing.
 

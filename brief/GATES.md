@@ -17,6 +17,7 @@
 | G-04 | Contact-form spam | Keep honeypot plus in-memory rate limit, or add CAPTCHA / a persistent limit? The form can mail arbitrary third parties. | Stéan | 2026-10-05 | a DECISIONS row |
 | G-05 | The open redirect | Restrict `/api/track/click` to own and allow-listed hosts, or remove it while campaigns are off? | Stéan | 2026-10-05 | a DECISIONS row |
 | G-06 | Live site details | Are the WhatsApp number and Google Maps URL in admin settings the real ones, and does DNS point at Vercel? (carried from `PROJECT_TODO.md`) | Stéan / Charl | 2026-10-05 | an `EVIDENCE.md` line |
+| G-08 | A green gate | knip reports 23 unused files, 2 unused deps (`cmdk`, `framer-motion`), 111 unused exports and 16 unused types; madge reports 2 cycles (`components/booking/booking-widget.tsx` ↔ its step components). Almost all of it is switched-off template code. Delete it, mark the template seams as knip entries, or both? Until then `npm run check` is red at `check:deadcode`. | Stéan | 2026-10-05 | `npm run check` exits 0 |
 | G-07 | What `SUPABASE_DB` is | Nothing reads it — keep, rename, or drop it from the secrets channel? | Stéan | 2026-10-05 | a DECISIONS row |
 
 ## Closed

@@ -46,7 +46,6 @@
     "lib/**/*.{ts,tsx}",   // lib/locale.tsx is a client provider
     "config/**/*.ts",
     "types/**/*.ts",
-    "proxy.ts",            // Next 16 proxy (was middleware.ts)
     "scripts/**/*.mjs",
     ".claude/hooks/**/*.{js,mjs}"
   ],

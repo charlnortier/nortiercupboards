@@ -8,8 +8,10 @@ the source for every fact here, and wins when the two disagree.
 `npm run check`. **Do not restate the step list anywhere; read `package.json`**, which is the
 only copy that cannot go stale. It is GREEN as of
 2026-10-05 (the three pre-adoption lint errors were fixed in `f6e9d83`), and it type-checks —
-which matters because `next.config.ts` sets `ignoreBuildErrors`, so the build would not. Anything
-red is a regression.
+which matters because `next.config.ts` sets `ignoreBuildErrors`, so the build would not. Since the tier-0
+slots were wired it is RED at `check:deadcode` (knip) and `check:cycles` (madge) on pre-existing
+template code — `brief/GATES.md` G-08. Every step before `check:deadcode` must pass; a failure
+there, or a knip/madge finding in a file you touched, is yours.
 
 There is no CI and no test suite.
 

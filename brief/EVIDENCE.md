@@ -65,8 +65,11 @@
   no-unescaped-entities ×2.** — *source: survey, grounder §1, run 2026-10-05*
 - **`next.config.ts` sets `typescript.ignoreBuildErrors: true`, so a type error deploys.** —
   *source: next.config.ts*
-- **`npm run check` = hook probes + agent checks + lint; it does not type-check, build or test.** —
-  *source: package.json:10-12*
+- **`npm run check` runs hook probes, agent checks, brief and CLAUDE.md checks, `tsc`, eslint, knip
+  and madge; it does not build or test.** — *source: package.json `check`*
+- **At wiring (2026-10-05) knip found 23 unused files, 2 unused dependencies, 111 unused exports and
+  16 unused exported types; madge found 2 circular imports, both in `components/booking/`.** —
+  *source: `npx knip`, `npx madge --circular --extensions ts,tsx app components lib`, run at `a978f4b`*
 
 ## Dangers
 
