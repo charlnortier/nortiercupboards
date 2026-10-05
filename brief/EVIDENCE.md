@@ -54,6 +54,13 @@
 - **`SUPABASE_DB` (40 characters, in the secrets channel) is read nowhere in the repo.** — *source:
   survey, db-inspector Q5*
 
+- **Live settings (2026-10-05): WhatsApp `27814164053`; Google Maps embed centred on Paarl; contact
+  email `info@nortier.co.za`; address 6 Suid St, Southern Paarl, Paarl, 7646.** — *source:
+  `site_content` row `site_settings`, read-only GET 2026-10-05*
+- **DNS: `nortiercupboards.co.za` resolves to 216.198.79.1 and serves from Vercel, redirecting to
+  `www`; after the deletion deploy `/shop` is 404 and `/portal` 308s to `/`.** — *source:
+  `nslookup`, `curl` 2026-10-05*
+
 ## Code and gates
 
 - **Stack: Next 16.1.6, React 19.2.3, Tailwind 4, supabase-js 2.95 + ssr 0.8, Resend 6 with a
