@@ -27,8 +27,16 @@ const subjects: Record<EmailTemplate, (props: Record<string, any>) => string> = 
 
 // ─── Resend Instance ──────────────────────────────────────
 
-const FROM_ADDRESS = process.env.RESEND_FROM || "noreply@example.com";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@example.com";
+// Fallbacks are this site's real addresses, never example.com: with an unset var
+// the template sent admin notices to admin@example.com, and a lead nobody sees is
+// a lost lead. The error says the env is incomplete without dropping mail.
+const FROM_ADDRESS = process.env.RESEND_FROM || "noreply@nortiercupboards.co.za";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "info@nortier.co.za";
+if (!process.env.RESEND_FROM || !process.env.ADMIN_EMAIL) {
+  console.error(
+    "[Email] RESEND_FROM or ADMIN_EMAIL is unset — using the built-in fallback addresses"
+  );
+}
 
 // ─── Send Function ────────────────────────────────────────
 

@@ -7,12 +7,14 @@ const CRON_SECRET = process.env.CRON_SECRET;
 // ─── Main handler ────────────────────────────────────────
 
 export async function GET(request: Request) {
-  // Auth: Vercel sends Authorization header for cron jobs
-  if (CRON_SECRET) {
-    const auth = request.headers.get("authorization");
-    if (auth !== `Bearer ${CRON_SECRET}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+  // Auth: Vercel sends `Authorization: Bearer $CRON_SECRET` for cron jobs. Fails
+  // closed: with the secret unset this endpoint used to run for any GET.
+  if (!CRON_SECRET) {
+    console.error("[cron] CRON_SECRET is unset — refusing to run");
+    return NextResponse.json({ error: "Cron not configured" }, { status: 503 });
+  }
+  if (request.headers.get("authorization") !== `Bearer ${CRON_SECRET}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const supabase = createAdminClient();
