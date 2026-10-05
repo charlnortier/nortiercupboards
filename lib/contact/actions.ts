@@ -11,13 +11,32 @@ export type ContactFormState = {
   error?: string;
 } | null;
 
+// Faster than this from the form becoming usable to the last keystroke is not a
+// person typing. Measured in the browser (contact-form.tsx `fill_ms`).
+const MIN_FILL_MS = 3000;
+
+/** Returns why a submission looks like a bot, or null. */
+function detectSpam(formData: FormData): string | null {
+  // Hidden fields a human never sees (contact-form.tsx); bots fill them.
+  for (const field of ["website", "subject"]) {
+    if ((formData.get(field) as string | null)?.trim()) return `honeypot "${field}" filled`;
+  }
+  // Absent when the page ran no JavaScript or nothing was typed; only a present,
+  // too-small value counts.
+  const fillMs = Number(formData.get("fill_ms"));
+  if (fillMs > 0 && fillMs < MIN_FILL_MS) return "filled in too fast";
+  return null;
+}
+
 export async function submitContactForm(
   _prevState: ContactFormState,
   formData: FormData
 ): Promise<ContactFormState> {
-  // Honeypot check — bots fill in the hidden "website" field
-  const honeypot = (formData.get("website") as string)?.trim();
-  if (honeypot) {
+  // Spam traps. A bot gets the same success reply as a person, so it learns
+  // nothing; nothing is saved and no email is sent.
+  const spamReason = detectSpam(formData);
+  if (spamReason) {
+    console.log(`[contact] spam rejected: ${spamReason}`);
     return { success: true };
   }
 

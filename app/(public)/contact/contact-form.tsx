@@ -17,6 +17,21 @@ export function ContactForm() {
     null
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const fillMsRef = useRef<HTMLInputElement>(null);
+  const mountedAtRef = useRef(0);
+
+  // Time from the form becoming usable to the visitor's latest keystroke, for the
+  // server's too-fast-to-be-human check. Both ends are read from the browser's
+  // clock, so a visitor whose clock disagrees with the server's is never judged
+  // by the difference. Set after mount, so server and client HTML match.
+  useEffect(() => {
+    mountedAtRef.current = Date.now();
+  }, []);
+  const recordFillTime = () => {
+    if (fillMsRef.current && mountedAtRef.current) {
+      fillMsRef.current.value = String(Date.now() - mountedAtRef.current);
+    }
+  };
 
   useEffect(() => {
     if (state?.success) {
@@ -38,17 +53,24 @@ export function ContactForm() {
   }
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-4">
+    <form ref={formRef} action={formAction} onInput={recordFillTime} className="space-y-4">
       {state?.error && (
         <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
           {state.error}
         </div>
       )}
 
-      {/* Honeypot — hidden from humans, filled by bots */}
-      <div className="absolute -left-[9999px]" aria-hidden="true">
-        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      {/* Honeypots — off-screen and out of the tab order, so humans never see or
+          reach them, but labelled like ordinary required fields so a form-filling
+          bot completes them. Any value in either marks the submission as spam.
+          Names are ones browsers do not autofill. */}
+      <div className="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+        <label htmlFor="website">Website *</label>
+        <input id="website" type="text" name="website" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="subject">Subject *</label>
+        <input id="subject" type="text" name="subject" tabIndex={-1} autoComplete="off" />
       </div>
+      <input ref={fillMsRef} type="hidden" name="fill_ms" />
 
       <div className="space-y-2">
         <Label htmlFor="name">{t({ en: "Name", af: "Naam" })} *</Label>
