@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import { after } from "next/server";
 import { sendEmail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rate-limit";
 
@@ -64,15 +65,17 @@ export async function signUp(
     return { error: error.message };
   }
 
-  // Fire-and-forget welcome email
-  sendEmail({
-    to: email,
-    template: "welcome",
-    props: {
-      clientName: full_name,
-      portalUrl: `${process.env.NEXT_PUBLIC_APP_URL}/portal`,
-    },
-  }).catch((err) => console.error("[email] welcome failed:", err));
+  // Send welcome email after the response (`after` keeps the function alive until done)
+  after(() =>
+    sendEmail({
+      to: email,
+      template: "welcome",
+      props: {
+        clientName: full_name,
+        portalUrl: `${process.env.NEXT_PUBLIC_APP_URL}/portal`,
+      },
+    }).catch((err) => console.error("[email] welcome failed:", err))
+  );
 
   return { success: true };
 }

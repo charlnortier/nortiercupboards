@@ -1,6 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
+import { after } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -41,13 +42,15 @@ export async function subscribeNewsletter(
     return { error: "Something went wrong. Please try again." };
   }
 
-  // Fire-and-forget newsletter welcome email
-  sendEmail({
-    to: email,
-    template: "newsletter_welcome",
-    props: {},
-    unsubscribeToken: email,
-  }).catch((err) => console.error("[email] newsletter_welcome failed:", err));
+  // Send welcome email after the response (`after` keeps the function alive until done)
+  after(() =>
+    sendEmail({
+      to: email,
+      template: "newsletter_welcome",
+      props: {},
+      unsubscribeToken: email,
+    }).catch((err) => console.error("[email] newsletter_welcome failed:", err))
+  );
 
   return { success: true };
 }
