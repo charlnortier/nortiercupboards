@@ -195,8 +195,7 @@ asks what changes on the live site the moment this lands.
 - **Does it touch the contact form or its spam handling** (honeypot plus IP rate limit)? Leads are
   the site's whole purpose; a broken form is silent.
 
-**`npm run check` passing proves none of the above**, and at adoption it does not pass at all
-(three pre-existing lint errors, `_SURFACE.md`).
+**`npm run check` passing proves none of the above.**
 
 Shared facts — the check gate, the danger census, the SSOTs — are in
 `.claude/agents/_SURFACE.md`.

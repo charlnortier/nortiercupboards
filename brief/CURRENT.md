@@ -1,19 +1,16 @@
 # Current
 
 > **Where the work is, right now.** Read at the start of every session; **written after every
-> meaningful step**, before committing. A file that is only ever read goes stale in one session and
-> then misleads the next.
->
-> **Hard ceiling: 8 KB.** This is a handoff note, not a journal — it is read before every session,
-> so its size is a per-session tax. Anything older than the current step is history: finished
-> decisions go to `DECISIONS.md`, finished steps to `build/INDEX.md`, the rest nowhere.
+> meaningful step**, before committing. **Hard ceiling: 8 KB.**
 
-**Active** — <the build/band and step>
+**Active** — adoption of dev-standards complete (2026-10-05); no build in progress.
 
-**Just done** — <one line each, most recent first>
+**Just done**
+- Adoption: brief filled (EVIDENCE from the Phase 1 survey), pre-adoption docs filed, CLAUDE.md, gate widened (typecheck, brief, claude-md, context-budget), agents' surfaces updated.
+- `5d8c906` storage actions require admin; `f6e9d83` lint errors cleared. Both walker-reviewed (proceed).
 
-**Next action** — <the exact next thing, specific enough to start on>
+**Next action** — push `main` (the operator's call: it deploys the storage fix), then work the gates in `GATES.md`, G-01 first.
 
-**Decided mid-build, not yet in DECISIONS.md** — <or "nothing">
+**Decided mid-build, not yet in DECISIONS.md** — nothing.
 
-**Do not touch** — <files a session must leave alone, and why>
+**Do not touch** — `E:devdev-standards` (read-only); `package-lock.json` drift is the operator's, not committed by sessions.

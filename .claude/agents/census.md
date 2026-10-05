@@ -192,7 +192,7 @@ answers a question nobody asked. `isEnabled()` in `config/features.ts` decides w
 in `lib/email.ts`) on a request path, each classified as awaited, inside `after()`, or
 fire-and-forget. The positive to prove the search works: `lib/contact/actions.ts` uses `after(`.
 
-Skip `node_modules/`, `.next/`, and `project-brief/` unless the question is about them.
+Skip `node_modules/`, `.next/`, and `brief/research/` unless the question is about them.
 
 Shared facts — the check gate, the danger census, the SSOTs — are in
 `.claude/agents/_SURFACE.md`.

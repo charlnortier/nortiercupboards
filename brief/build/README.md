@@ -17,3 +17,4 @@ DELIVERY-STANDARD §2).
 
 Amendments number under what they amend — `20.1-ssot-cutover.md` sorts beneath `20-ssot.md`.
 No two documents may claim the same number.
+| `10-technical-design.md` | Architecture, schema, route map and DNS as designed before the build (pre-adoption, filed unchanged). **Stale in part**: says Next "14+" (it is 16), `/gallery` (it is `/portfolio`), a bespoke schema (the tree runs the 26 template migrations) — `EVIDENCE.md` wins |

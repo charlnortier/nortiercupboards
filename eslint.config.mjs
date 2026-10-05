@@ -23,6 +23,8 @@ const eslintConfig = defineConfig([
     // Temp/scratch folders
     "temp_folder_*/**",
     "todo/**",
+    // Agent handoff artefacts and their scratch probes — gitignored, never shipped
+    ".handoff/**",
   ]),
 ]);
 

@@ -62,6 +62,14 @@ CANON'S    the wrong subject, and /walk cannot run as written. Either the agents
 SMALLEST   Say which: install the agents with the hooks, or have apply-kit name the agents as a deliberate
 FIX        later step so the gap is visible rather than inferred.
 
+### CF-4 · Token-economy tier 2 is a playbook row with no kit row
+OBSERVED   3-TOKEN-ECONOMY.md lists `.claude/hooks/context-budget.js` and `scripts/check-context-budget.mjs` as tiers 2–3, but apply-kit has no row for either; this project copied both byte-for-byte from E:\dev\pleks.
+COMMAND    `node E:/dev/dev-standards/tools/apply-kit.mjs nortiercupboards` → no `context-budget` row in the plan; `cp E:/dev/pleks/.claude/hooks/context-budget.js .claude/hooks/` then `node scripts/check-context-budget.mjs` → `✅ probes green`
+WHY IT IS  A project-to-project copy has no drift check: when pleks fixes the hook, this copy never hears.
+CANON'S    Both files ran green here unmodified, so they are portable as they stand.
+SMALLEST   Add `context-budget` and `check-context-budget` as optional kit rows (`--with`), sourced from
+FIX        pleks's current bytes; this project would then take them with `--carry-only`.
+
 ---
 
 ## 2 · Lesson answers

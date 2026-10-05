@@ -117,13 +117,12 @@ as missing the block, that is this exemption showing up — not a defect to fix 
 
 ## Project surface
 
-**Dormant until there is a doctrine to crawl.** There is no `CLAUDE.md` yet and no
-`docs/MECHANISABLE.md`, so there are no stated rules for a build to contradict. It wakes when
-`CLAUDE.md` lands (adoption step 5).
+**The doctrine is `CLAUDE.md`** (§4 Enforced, §5) **and `docs/MECHANISABLE.md`**, both from
+2026-10-05; the facts it is checked against are in `brief/EVIDENCE.md`.
 
-**The drift class waiting for it:** `project-brief/` holds the Yoros template's universal brief
-(`YOROS_UNIVERSAL_PROJECT_BRIEF.md`, `YOROS_I18N_DARKMODE_STANDARD.md`) beside this project's own
-(`PROJECT_BRIEF.md`, `TECHNICAL_DESIGN.md`, `build plan/`). Where the template brief and the
+**The drift class waiting for it:** `brief/research/` holds the Yoros template's universal brief
+(`YOROS_UNIVERSAL_PROJECT_BRIEF.md`, `YOROS_I18N_DARKMODE_STANDARD.md`); this project's own is
+`brief/product/PROJECT_BRIEF.md` and `brief/build/10-technical-design.md` (stale in part). Where the template brief and the
 project brief disagree, the project brief and `config/site.ts` win — and a crawl that reports the
 template's features as missing has read the wrong document.
 

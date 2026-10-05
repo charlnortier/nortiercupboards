@@ -192,8 +192,7 @@ Promote    none | <section ref> → <suggested destination>
 - **No `config/site.ts` feature flag flips.** Turning a template feature on is a product decision
   and may need migrations that have never run against production.
 
-**The gate is red on three pre-existing lint errors** at adoption (`_SURFACE.md`). Report the gate
-as "green except those three" only if it is exactly those three; any other failure is yours.
+**The gate is green** (`_SURFACE.md`); any failure after your change is yours.
 
 Shared facts — the check gate, the danger census, the SSOTs — are in
 `.claude/agents/_SURFACE.md`.

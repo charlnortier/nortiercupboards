@@ -154,13 +154,13 @@ Promote    none | <section ref> → <suggested destination>
 **Where the documents live, and which one wins when two disagree:**
 
 - **`brief/`** — the adopted brief: a six-file spine at its root, role folders under it.
-  `brief/EVIDENCE.md` is the source for a measured fact about the live system. Being filled by the
-  Phase 1 survey from 2026-10-05.
-- **`project-brief/`** — the pre-adoption brief, being filed into `brief/`. Two kinds of document
-  sit in it: this project's (`PROJECT_BRIEF.md`, `TECHNICAL_DESIGN.md`, `build plan/`, `design/`)
-  and the Yoros template's (`YOROS_*.md`). The project's wins over the template's.
+  `brief/EVIDENCE.md` is the source for a measured fact about the live system. Filled by the Phase 1
+  survey, 2026-10-05; the raw survey is `brief/research/00-intake-survey.md`.
+- **Two kinds of brief document**: this project's (`brief/product/PROJECT_BRIEF.md`,
+  `brief/build/10-technical-design.md`, `brief/design/`) and the Yoros template's
+  (`brief/research/YOROS_*.md`). The project's wins over the template's. The old build plan and
+  `PROJECT_TODO.md` were retired to git history on 2026-10-05.
 - **`config/site.ts`** — what is actually switched on. Wins over any brief describing a feature.
-- **`PROJECT_TODO.md`** — the pre-adoption to-do list at the root.
 - **`docs/CANON-FINDINGS.md`** — the outbox to dev-standards.
 - **`supabase/migrations/`** — what the schema was declared to be; whether production matches is
   unconfirmed.

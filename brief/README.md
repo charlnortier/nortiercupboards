@@ -1,13 +1,13 @@
-# Brief — <PROJECT>
+# Brief — Nortier Cupboards
 
 > **The index, and nothing else.** Arguments live in the file that owns them and get one line here.
 > Conforms to `dev-standards/standards/BRIEF-STANDARD.md` v1.1.
 
-**What this project is, in three sentences.** <Replace. Enough for a session that has never seen the
-repo to know what it is looking at. Not a pitch.>
+**What this project is, in three sentences.** A brochure website for Nortier Cupboards, a custom
+cupboard maker in Paarl, at `nortiercupboards.co.za`. It is the Yoros client template with most of
+its features switched off; its job is turning visitors into contact-form leads.
 
-**This brief is TRACKED / SYNCED.** <Delete one. Tracked is the default; synced means the checker
-runs advisory-only and staleness comes from mtime rather than git. §5 of the standard.>
+**This brief is TRACKED.**
 
 ## The spine
 
