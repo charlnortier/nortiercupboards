@@ -18,18 +18,15 @@ export function ContactForm() {
   );
   const formRef = useRef<HTMLFormElement>(null);
   const fillMsRef = useRef<HTMLInputElement>(null);
-  const firstInputAtRef = useRef(0);
-
-  // Time from the visitor's first keystroke to their latest, for the server's
-  // too-fast-to-be-human check. Anchored on the first input, not on mount: the
-  // server-rendered form is usable before hydration, so a mount-time clock would
-  // miss typing done while the script loaded and flag a slow phone as a bot. Both
-  // ends come from the browser's clock, so device clock skew never matters.
+  // Time from page load to the visitor's latest input, for the server's
+  // too-fast-to-be-human check. Anchored on page load (performance.now), not on
+  // the first input: autofill fills name and email in one instant, so a person
+  // who then typed a short message measured under the limit first-to-last — the
+  // operator's own test on 2026-10-06 was trapped that way. Page load also covers
+  // typing done before hydration. One browser clock, so device skew never matters.
   const recordFillTime = () => {
-    const now = Date.now();
-    if (!firstInputAtRef.current) firstInputAtRef.current = now;
     if (fillMsRef.current) {
-      fillMsRef.current.value = String(now - firstInputAtRef.current);
+      fillMsRef.current.value = String(Math.round(performance.now()));
     }
   };
 

@@ -11,8 +11,9 @@ export type ContactFormState = {
   error?: string;
 } | null;
 
-// Faster than this from the form becoming usable to the last keystroke is not a
-// person typing. Measured in the browser (contact-form.tsx `fill_ms`).
+// Faster than this from page load to the last input is not a person — they have
+// to read, click into the message and type. Measured in the browser
+// (contact-form.tsx `fill_ms`).
 const MIN_FILL_MS = 3000;
 
 /** Returns why a submission looks like a bot, or null. */

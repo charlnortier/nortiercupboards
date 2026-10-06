@@ -47,8 +47,9 @@ Maps, advanced SEO, legal docs, Google Analytics, Resend.
 ## Contact-form spam traps
 `lib/contact/actions.ts` `detectSpam`. A trapped submission is **saved archived, never
 discarded**, and sends no email — a trap that drops mail hides its own false positives. Honeypot
-names must match no autofill or password-manager field (`website` did). The fill-time clock starts
-at the first input, not on mount, because the server-rendered form takes typing before hydration.
+names must match no autofill or password-manager field (`website` did). The fill-time clock runs
+from page load (`performance.now`): a mount anchor misses typing before hydration, and a
+first-input anchor traps autofill plus a short message.
 
 ## The schema channel
 **Narrow.** The only credential is the service-role key (`.env.local`, from `npm run
