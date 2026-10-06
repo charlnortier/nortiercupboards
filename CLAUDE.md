@@ -194,9 +194,9 @@ stop.
 **What does not live in code:**
 - `SUPABASE_SERVICE_ROLE_KEY` bypasses RLS on the production database — every use is a production
   write path.
-- `RESEND_FROM` / `ADMIN_EMAIL` unset → `lib/email.ts` silently sends from `noreply@example.com` and
-  notifies `admin@example.com`. A missing env var loses leads without an error.
-- `CRON_SECRET` unset → `/api/cron/daily` is open to any GET.
+- `RESEND_FROM` / `ADMIN_EMAIL` unset → `lib/email.ts` falls back to the site's real addresses and
+  logs an error. Confirm both are set in Vercel (G-03).
+- `CRON_SECRET` unset → `/api/cron/daily` refuses to run (503), so the cron silently stops.
 - `SUPABASE_DB` in the secrets channel is read by nothing in the repo; purpose unconfirmed.
 
 **Naming:** kebab-case files; `lib/<domain>/{actions,queries}.ts`; public pages are a server
