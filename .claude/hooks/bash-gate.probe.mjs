@@ -1,7 +1,7 @@
 /**
  * bash-gate.probe.mjs — KIT FILE, install at `.claude/hooks/`.
  *
- * @kit bash-gate-probe v9 — tracked OUTSIDE its `KIT:CONFIG` regions.
+ * @kit bash-gate-probe v11 — tracked OUTSIDE its `KIT:CONFIG` regions.
  *
  * BOTH DIRECTIONS, per `ledgers/LESSONS.md` L-01: a planted violation must FAIL
  * and a known-good case must PASS. A pattern that matches nothing reports 100%
@@ -191,6 +191,10 @@ export const LOOSENED = {
   "MESSAGE CLUSTER: -qm likewise": "v8: the same, for any cluster git ends in m",
   'MESSAGE ATTACHED: -m"…" is the message': "v8: v7 masked only a value after a space",
   'MESSAGE ATTACHED: --message="…" is the message': "v8: the same, for --message=",
+  // v10 shipped these looser verdicts undeclared; v11 declares them, found by running --against v9.
+  "v10: a grep pattern holding `|` is a pattern, not a pipe into a command": "v10: v9 split at a quoted `|` and read the pattern as a command",
+  "v10: a quoted `;` in an echo is text": "v10: v9 split at a quoted `;`",
+  "v10: a quoted pattern, then a pipe into a sink": "v10: the same, ahead of a pipe into a sink",
 };
 
 /**
@@ -533,6 +537,55 @@ const CASES = [
   { want: "deny", why: "RUNNER: bash -c and its string", payload: bash(`bash -c "git push -f origin ${W}"`) },
   { want: "deny", why: "RUNNER: sh -c and its string", payload: bash("sh -c 'rm -rf /*'") },
   { want: "deny", why: "RUNNER: eval", payload: bash(`eval "git push -f origin ${W}"`) },
+
+  // ── v10: A QUOTED SEPARATOR AFTER A DATA COMMAND IS TEXT — and nowhere else ──
+  // The allows are the false denies dev-standards measured; every deny below is a command v9 caught
+  // ONLY because it split on a quoted separator, so each one is the price the allow must not pay.
+  { want: "allow", why: "v10: a grep pattern holding `|` is a pattern, not a pipe into a command", payload: bash('grep -E "x|git push -f origin main|y" notes.md') },
+  { want: "allow", why: "v10: a quoted `;` in an echo is text", payload: bash("echo 'done; rm -rf / was never run'") },
+  { want: "allow", why: "v10: a quoted pattern, then a pipe into a sink", payload: bash('grep -E "a|rm -rf /" f | head -5') },
+  { want: "allow", why: "a PR body written by a heredoc into gh is a message (v9 already: gh is a sink) — held here beside the v10 cases it must survive",
+    payload: bash("gh pr create --title t --body \"$(cat <<'EOF'\nthis no longer denies git push -f origin main\nEOF\n)\"") },
+  { want: "deny", why: "v10 floor: a second command inside a RUNNER's string — bash -c reads only its first word", payload: bash('bash -c "echo hi; rm -rf /*"') },
+  { want: "deny", why: "v10 floor: the same through ssh, a runner no table lists", payload: bash('ssh host "uptime; rm -rf /*"') },
+  { want: "deny", why: "v10 floor: data piped into a shell is code", payload: bash('echo "a; rm -rf /*" | sh') },
+  { want: "deny", why: "v10 floor: data piped through xargs into a shell is code", payload: bash('echo "a; rm -rf /*" | xargs sh -c') },
+  { want: "deny", why: "v10 floor: a wrapper in front of the data command — the first word is not data", payload: bash('sudo echo "a; rm -rf /*"') },
+  { want: "deny", why: "v10 floor: a substitution re-pairs the quotes after it, so nothing is trusted", payload: bash('echo "$(echo "a" ; rm -rf /*)"') },
+  { want: "deny", why: "v10 floor: an apostrophe in a comment shifts every quote after it", payload: bash("echo a # it's\nrm -rf /* ; echo 'b'") },
+  { want: "deny", why: "v10 floor: …and when the shifted quotes all CLOSE, only the quoted newline gives it away", payload: bash("echo a # it's\nrm -rf /* ; echo \\'") },
+  { want: "deny", why: "v10 floor: a quote that never closes is not a quote this file can pair", payload: bash('echo "a; rm -rf /*') },
+  { want: "deny", why: "v10 floor: a heredoc substituted into a RUNNER is code, whoever receives it", payload: bash("bash -c \"$(cat <<'EOF'\nrm -rf /*\nEOF\n)\"") },
+  { want: "deny", why: "v10 floor: a heredoc substituted into a non-sink and piped to a shell keeps its body", payload: bash("echo \"$(cat <<'EOF'\nrm -rf /*\nEOF\n)\" | sh") },
+  { want: "deny", why: "v10 floor: an unquoted separator after a data command still splits", payload: bash("echo 'x' ; rm -rf /*") },
+
+  // ── v11: A STRING GIT RUNS IS A COMMAND (blindly G-10, walk 02) ──
+  // Every deny below was ALLOWED by v10 and every version before it; every allow is the cost v11
+  // must not charge — a config value that names no gated command.
+  { want: "deny", why: "v11: a `!` alias is a shell command", payload: bash('git -c alias.q="!rm -rf /*" q') },
+  { want: "deny", why: "v11: …single-quoted", payload: bash("git -c alias.q='!rm -rf /*' q") },
+  { want: "deny", why: "v11: …with the whole -c argument quoted", payload: bash('git -c "alias.q=!rm -rf /*" q') },
+  { want: "deny", why: "v11: git appends the alias's arguments to a `!` command", payload: bash("git -c alias.q='!rm -rf' q /") },
+  { want: "deny", why: "v11: an alias without `!` is git arguments — this one force-pushes", payload: bash(`git -c alias.p="push --force" p origin ${W}`) },
+  { want: "deny", why: "v11: core.pager runs its value", payload: bash('git -c core.pager="rm -rf /*" log') },
+  { want: "deny", why: "v11: core.sshCommand runs its value", payload: bash('git -c core.sshCommand="rm -rf /*" fetch') },
+  { want: "deny", why: "v11: behind another global option", payload: bash('git -C . -c core.editor="rm -rf ~" commit') },
+  { want: "deny", why: "v11: behind a wrapper", payload: bash('sudo git -c alias.q="!rm -rf /*" q') },
+  { want: "deny", why: "v11: at a later position the backstop finds", payload: bash("find . -exec git -c alias.q='!rm -rf /*' q \\;") },
+  { want: "deny", why: "v11: git config WRITES an alias that runs later", payload: bash("git config alias.q '!rm -rf /*'") },
+  { want: "deny", why: "v11: …with --global and the newer `set` verb", payload: bash("git config --global set alias.q '!rm -rf /*'") },
+  { want: "deny", why: "v11: …past an option's value (--file names the config, not the key)", payload: bash("git config --file cfg alias.q '!rm -rf /*'") },
+  { want: "deny", why: "v11: GIT_SSH_COMMAND runs its value", payload: bash('GIT_SSH_COMMAND="rm -rf /*" git fetch') },
+  { want: "deny", why: "v11: EDITOR runs its value", payload: bash('EDITOR="rm -rf ~" git commit') },
+  { want: "deny", why: "v11: GIT_CONFIG_VALUE_0 sets a key from the environment", payload: bash("GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=alias.q GIT_CONFIG_VALUE_0='!rm -rf /*' git q") },
+  { want: "deny", why: "v11: exported, in the same segment", payload: bash('export GIT_PAGER="rm -rf /*"') },
+  { want: "allow", why: "v11: an inert -c value passes", payload: bash("git -c color.ui=always log --oneline -5") },
+  { want: "allow", why: "v11: a harmless `!` alias passes", payload: bash("git -c alias.st='!git status --short' st") },
+  { want: "allow", why: "v11: an ssh command passes", payload: bash('git -c core.sshCommand="ssh -i ~/.ssh/deploy" fetch') },
+  { want: "allow", why: "v11: commit -c reuses a message, not a config value", payload: bash("git commit -c HEAD") },
+  { want: "allow", why: "v11: git config reads and inert writes pass", payload: bash("git config --get alias.st && git config user.name 'A B' && git config --file .git/config core.autocrlf false") },
+  { want: "allow", why: "v11: a pager variable that names a pager passes", payload: bash('GIT_PAGER="less -R" git log') },
+  { want: "allow", why: "v11: an assignment git does not read is not a command", payload: bash('MSG="rm -rf /" node x.js') },
   { want: "deny", why: "KEYWORD: then opens a command", payload: bash("if true; then git push -f; fi") },
   { want: "deny", why: "KEYWORD: do opens a command", payload: bash("for i in 1; do rm -rf /; done") },
   { want: "deny", why: "KEYWORD: ! opens a command", payload: bash("! git push -f") },
