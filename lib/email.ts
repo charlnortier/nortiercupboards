@@ -176,6 +176,29 @@ export async function sendRawEmail({ to, subject, html, replyTo }: SendRawEmailO
   }
 }
 
+// ─── Ops Alert (to the developer, never the client) ──────
+
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/**
+ * Plain-text alert to OPS_EMAIL — the developer maintaining the site. Kept apart
+ * from ADMIN_EMAIL, which is the client's inbox: a "your env var is missing"
+ * email is noise to the client and a signal only to whoever can fix it.
+ */
+export async function alertOps(subject: string, lines: string[]) {
+  const to = process.env.OPS_EMAIL;
+  if (!to) {
+    console.error(`[Email] OPS_EMAIL is unset — alert not sent: ${subject}`);
+    return { success: false };
+  }
+  return sendRawEmail({
+    to,
+    subject: `[nortiercupboards] ${subject}`,
+    html: `<p>${lines.map(escapeHtml).join("<br>")}</p>`,
+  });
+}
+
 // ─── Convenience: Send Admin Notification ─────────────────
 
 export async function notifyAdmin(

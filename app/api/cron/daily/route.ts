@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { siteConfig } from "@/config/site";
+import { alertOps } from "@/lib/email";
 
 const CRON_SECRET = process.env.CRON_SECRET;
 
@@ -37,12 +38,36 @@ export async function GET(request: Request) {
     });
   }
 
+  // Tell the developer when something needs them — and only then. A clean run
+  // sends nothing; before this, a failed task was a cron_runs row nobody read.
+  const failed = Object.entries(tasks).filter(([, r]) => r.status === "error");
+  const missingEnv = REQUIRED_ENV.filter((name) => !process.env[name]);
+  if (failed.length > 0 || missingEnv.length > 0) {
+    // Awaited, not fire-and-forget: Vercel drops an un-awaited send (M-001).
+    await alertOps("daily check needs attention", [
+      ...failed.map(([name, r]) => `Task ${name} failed: ${String(r.summary.error ?? "unknown error")}`),
+      ...missingEnv.map((name) => `Env var ${name} is not set in Vercel`),
+    ]);
+  }
+
   return NextResponse.json({
     ok: true,
     durationMs: totalDuration,
     tasks,
+    missingEnv,
   });
 }
+
+// Env vars the site needs to deliver a lead. CRON_SECRET is not listed: without
+// it this route refuses to run, so it could never report its own absence.
+const REQUIRED_ENV = [
+  "NEXT_PUBLIC_SUPABASE_URL",
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "RESEND_API_KEY",
+  "RESEND_FROM",
+  "ADMIN_EMAIL",
+  "NEXT_PUBLIC_APP_URL",
+];
 
 // ─── Task runner ─────────────────────────────────────────
 
