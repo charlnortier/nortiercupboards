@@ -1,0 +1,39 @@
+# Runs the SAME gate as the local commit gate: `npm run check`, nothing more or less.
+#
+# Pushes to main deploy straight to the live site, so on main this is a signal
+# after the fact, not a gate: a red run means the live site is carrying code that
+# skipped the check. On a pull request (Dependabot's included) it runs before merge.
+#
+# No `next build`: Vercel builds every push, and that is the build signal. The
+# build sets `ignoreBuildErrors`, which is why `typecheck` inside the gate matters.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  check:
+    name: npm run check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Run the gate
+        run: npm run check

@@ -1,0 +1,34 @@
+# Weekly dependency PRs. Never auto-merged: a merge to main deploys the live site,
+# so each PR waits for CI green and a person.
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Africa/Johannesburg
+    open-pull-requests-limit: 5
+    # Minor + patch arrive as one PR a week; each major gets its own.
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # @supabase/ssr is 0.x, where a minor bump can break; review by hand.
+      - dependency-name: "@supabase/ssr"
+        update-types: ["version-update:semver-minor"]
+    labels:
+      - dependencies
+    commit-message:
+      prefix: chore
+      include: scope
+
+  # Keeps actions/checkout and actions/setup-node current in ci.yml.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

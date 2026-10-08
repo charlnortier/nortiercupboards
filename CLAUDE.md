@@ -77,6 +77,9 @@ campaigns) were deleted on 2026-10-05 and will not return; their tables stay in 
 | Before every push | `npm run check` green, then `/walk` on the range |
 | Before every deploy | a deploy IS a push to `main` — the push gate is the deploy gate |
 
+**CI** (`.github/workflows/ci.yml`) runs the same `npm run check` on every push and PR — after the
+fact on `main`, since the push has already deployed. Dependabot opens weekly PRs; never auto-merge.
+
 **Push policy: `main` only; announce intent, then push.** `bash-gate` asks on every push to `main`.
 
 **Hook-denied** (bash-gate): force pushes and `+refspec`, `npm publish`, agent commits/pushes.
@@ -197,6 +200,8 @@ stop.
 - `RESEND_FROM` / `ADMIN_EMAIL` unset → `lib/email.ts` falls back to the site's real addresses and
   logs an error. Confirm both are set in Vercel (G-03).
 - `CRON_SECRET` unset → `/api/cron/daily` refuses to run (503), so the cron silently stops.
+- `OPS_EMAIL` is the developer's inbox, never the client's: the daily cron emails it only when a
+  task failed or a required env var is missing. Unset → the alert is only logged.
 - `SUPABASE_DB` in the secrets channel is read by nothing in the repo; purpose unconfirmed.
 
 **Naming:** kebab-case files; `lib/<domain>/{actions,queries}.ts`; public pages are a server
