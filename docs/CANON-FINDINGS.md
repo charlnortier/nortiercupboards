@@ -70,6 +70,22 @@ CANON'S    Both files ran green here unmodified, so they are portable as they st
 SMALLEST   Add `context-budget` and `check-context-budget` as optional kit rows (`--with`), sourced from
 FIX        pleks's current bytes; this project would then take them with `--carry-only`.
 
+### CF-5 · `apply-kit --carry-only --write` carries from canon's working tree, mid-edit included
+OBSERVED   2026-10-06, canon HEAD `003dad8` (bash-gate v13) with an uncommitted v14 being written. The carry
+           wrote a bash-gate.probe.mjs headed `@kit … v13` that held 11 `v14` probe lines; the gate here
+           went green on it. The inbox run straight after said canon's inputs were "rewritten during the
+           run" and its result NOT ATTRIBUTABLE — but the carry itself had reported `✅ carried`.
+COMMAND    `node E:/dev/dev-standards/tools/apply-kit.mjs nortiercupboards --carry-only --write` while
+           canon was dirty, then `git -C E:/dev/dev-standards show 003dad8:kit/project-kit/hooks/bash-gate.probe.mjs | diff - .claude/hooks/bash-gate.probe.mjs`
+           → 14 lines of v14 probes beyond canon's committed v13.
+WHY IT IS  The carry is canon's tool and its bytes are canon's. A project cannot tell a hybrid from a
+CANON'S    release: the version header said v13, the gate passed, and only a diff against canon's commit
+           showed it. Caught here and the hybrid dropped from the commit (`55c5659`); v14 taken clean later
+           (`22d3069`, canon `c4db289`).
+SMALLEST   Make the carry read canon's committed bytes (`git show HEAD:<path>`), or refuse to write when a
+FIX        carried row's source is dirty in canon — the same guard the inbox already has, applied before
+           writing rather than after.
+
 ---
 
 ## 2 · Lesson answers
