@@ -18,6 +18,10 @@ updates:
           - minor
           - patch
     ignore:
+      # @types/node tracks the runtime's Node major (22, as in ci.yml). Types for a newer Node
+      # would let code call APIs the live server lacks. Bump it with the runtime, by hand.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
       # @supabase/ssr is 0.x, where a minor bump can break; review by hand.
       - dependency-name: "@supabase/ssr"
         update-types: ["version-update:semver-minor"]
