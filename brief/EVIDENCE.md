@@ -58,9 +58,11 @@
   email only, confirmation required); `user_profiles` still 2 rows, both `admin`, matching the 2 auth
   users 1:1; no user metadata carries `role`. Live policies and triggers are not readable through
   PostgREST, so whether production still has 002's unrestricted self-update is unmeasured; the repo
-  has no later migration that guards `role` before 027.** — *source:
-  `.handoff/l112-role-escalation/01-db-inspector.md` (GET `/auth/v1/settings`, `/rest/v1/user_profiles`,
-  `/auth/v1/admin/users`)*
+  has no later migration that guards `role` before 027.** — *source: db-inspector, 2026-10-11, at
+  `8c6356c`: GET `/auth/v1/settings` (anon key); GET `/rest/v1/user_profiles?select=id,email,role,
+  created_at,updated_at` → `bbd14d87` admin, `f6f5eb31` admin; GET `/auth/v1/admin/users` → the same
+  2 ids, metadata keys `email_verified` only; GET `/rest/v1/pg_policies` and `/pg_trigger` → 404
+  PGRST205*
 
 - **Live settings (2026-10-05): WhatsApp `27814164053`; Google Maps embed centred on Paarl; contact
   email `info@nortier.co.za`; address 6 Suid St, Southern Paarl, Paarl, 7646.** — *source:
