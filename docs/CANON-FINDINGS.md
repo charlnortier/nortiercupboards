@@ -33,7 +33,34 @@ SMALLEST   the narrowest fix, and what it must not break
 FIX
 ```
 
-*None open — CF-1 to CF-5 were taken by canon; see Filed.*
+### CF-6 · `/walk` asks for upstream artefacts by path; check-handoff-contract refuses them
+```
+OBSERVED   walk.md step 2 briefs the walker with "the upstream artefacts it may read, by path".
+           The walker listed .handoff/l112-role-escalation/01-db-inspector.md under ## Inputs,
+           and the commit gate failed.
+COMMAND    node scripts/check-handoff-contract.mjs
+           → .handoff/walk-l112/01-walker.md: `## Inputs` names .handoff/l112-role-escalation/
+             01-db-inspector.md — another task directory; a chain is walked inside one task
+WHY IT IS  Both files are kit (walk v1, check-handoff-contract v9). Every walk of work that had
+CANON'S    its own pipeline hits this, on any stack.
+SMALLEST   Let ## Inputs name another task's artefact if it exists and its anchor resolves (an
+FIX        upstream input, not a chain step), or have walk.md say upstream artefacts are cited
+           outside ## Inputs. Must keep refusing a same-task chain that points at nothing.
+           Worked around here by citing the artefact in prose (walk-l112/01-walker.md).
+```
+
+### CF-7 · `## Inputs` parsing reads a date-prefixed out-of-tree filename as a chain step
+```
+OBSERVED   An Inputs line naming E:/dev/dev-standards/docs/handovers/2026-10-11-nortiercupboards-
+           role-self-assign.md was read as step file "11-nortiercupboards-role-self-assign.md".
+COMMAND    git commit (pre-commit → check:agents)
+           → `## Inputs` names 11-nortiercupboards-role-self-assign.md, which is not in
+             .handoff/walk-l112/ — the chain points at nothing
+WHY IT IS  inputsOf() matches NN-<name>.md anywhere in the line; canon's own handover names are
+CANON'S    date-prefixed, and the inbox tells every project to read them.
+SMALLEST   Match only a bare `NN-agent.md` or a `.handoff/`-rooted path, not a suffix inside an
+FIX        absolute path. Must still catch `.handoff/<slug>/NN-x.md`.
+```
 
 ---
 
@@ -46,7 +73,7 @@ off this table and it stays open.
 
 | Lesson | Answer — `YYYY-MM-DD` or `n/a: <reason>` | Evidence — SHA, path or command |
 |---|---|---|
-| L-112 | 2026-10-11 — the condition held in the tree (002_auth.sql:34-38, :44, :70, unchanged). Tree fixed: `027_protect_user_role.sql` (blindly 041, adapted), plus a fourth route canon's handover did not name: `lib/auth/queries.ts` `getCurrentUser` re-created a missing profile through the **service-role** client with `role` from `user_metadata`, which the user writes via `auth.updateUser` and which the trigger cannot see. **Production is not yet closed**: 027 waits on the operator's SQL editor, and signup is open (G-08). Live state: 2 users, both admin, no `role` in metadata — no sign of use. `pg_policies`/`pg_trigger` are not readable over PostgREST, so the live policies are unmeasured until 027's verify queries run. | the commit carrying 027; `.handoff/l112-role-escalation/01-db-inspector.md`; `brief/GATES.md` G-08 |
+| L-112 | 2026-10-11 — the condition held in the tree (002_auth.sql:34-38, :44, :70, unchanged). Tree fixed: `027_protect_user_role.sql` (blindly 041, adapted), plus a fourth route canon's handover did not name: `lib/auth/queries.ts` `getCurrentUser` re-created a missing profile through the **service-role** client with `role` from `user_metadata`, which the user writes via `auth.updateUser` and which the trigger cannot see. **Production is not yet closed**: 027 waits on the operator's SQL editor, and signup is open (G-08). Live state: 2 users, both admin, no `role` in metadata — no sign of use. `pg_policies`/`pg_trigger` are not readable over PostgREST, so the live policies are unmeasured until 027's verify queries run. For L-112's own text (walk-l112 finding 2): a role guard closes the door but evicts nobody — the close condition should re-read the privileged set (admin rows, auth users) **after** applying, not only verify the guard exists. | the commit carrying 027; `.handoff/l112-role-escalation/01-db-inspector.md`; `brief/GATES.md` G-08 |
 
 ---
 
