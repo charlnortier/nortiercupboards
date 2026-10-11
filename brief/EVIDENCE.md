@@ -54,6 +54,14 @@
 - **`SUPABASE_DB` (40 characters, in the secrets channel) is read nowhere in the repo.** — *source:
   survey, db-inspector Q5*
 
+- **Admin escalation (L-112), measured 2026-10-11: public signup is open (`disable_signup=false`,
+  email only, confirmation required); `user_profiles` still 2 rows, both `admin`, matching the 2 auth
+  users 1:1; no user metadata carries `role`. Live policies and triggers are not readable through
+  PostgREST, so whether production still has 002's unrestricted self-update is unmeasured; the repo
+  has no later migration that guards `role` before 027.** — *source:
+  `.handoff/l112-role-escalation/01-db-inspector.md` (GET `/auth/v1/settings`, `/rest/v1/user_profiles`,
+  `/auth/v1/admin/users`)*
+
 - **Live settings (2026-10-05): WhatsApp `27814164053`; Google Maps embed centred on Paarl; contact
   email `info@nortier.co.za`; address 6 Suid St, Southern Paarl, Paarl, 7646.** — *source:
   `site_content` row `site_settings`, read-only GET 2026-10-05*

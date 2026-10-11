@@ -53,7 +53,9 @@ export async function getCurrentUser(): Promise<UserProfile | null> {
           id: user.id,
           full_name: (meta.full_name as string) || "",
           phone: (meta.phone as string) || "",
-          role: (meta.role as string) || "customer",
+          // Never from metadata: the user writes their own (auth.updateUser), and this client
+          // is the service role, which 027_protect_user_role's trigger lets through (L-112).
+          role: "customer",
         })
         .select("*")
         .single();

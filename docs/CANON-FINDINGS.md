@@ -46,6 +46,7 @@ off this table and it stays open.
 
 | Lesson | Answer — `YYYY-MM-DD` or `n/a: <reason>` | Evidence — SHA, path or command |
 |---|---|---|
+| L-112 | 2026-10-11 — the condition held in the tree (002_auth.sql:34-38, :44, :70, unchanged). Tree fixed: `027_protect_user_role.sql` (blindly 041, adapted), plus a fourth route canon's handover did not name: `lib/auth/queries.ts` `getCurrentUser` re-created a missing profile through the **service-role** client with `role` from `user_metadata`, which the user writes via `auth.updateUser` and which the trigger cannot see. **Production is not yet closed**: 027 waits on the operator's SQL editor, and signup is open (G-08). Live state: 2 users, both admin, no `role` in metadata — no sign of use. `pg_policies`/`pg_trigger` are not readable over PostgREST, so the live policies are unmeasured until 027's verify queries run. | the commit carrying 027; `.handoff/l112-role-escalation/01-db-inspector.md`; `brief/GATES.md` G-08 |
 
 ---
 
