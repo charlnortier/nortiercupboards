@@ -73,8 +73,8 @@ campaigns) were deleted on 2026-10-05 and will not return; their tables stay in 
 
 | Gate | Command |
 |---|---|
-| Before every commit | `npm run check` |
-| Before every push | `npm run check` green, then `/walk` on the range |
+| Before every commit | `.githooks/pre-commit` runs the part of `npm run check` the staged diff can affect (`scripts/check-scope.mjs`) |
+| Before every push | `.githooks/pre-push` runs the whole `npm run check`; then `/walk` on the range |
 | Before every deploy | a deploy IS a push to `main` — the push gate is the deploy gate |
 
 **CI** (`.github/workflows/ci.yml`) runs the same `npm run check` on every push and PR — after the

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check": "npm run check:hooks && npm run check:agents && npm run check:brief && npm run check:claude-md && npm run typecheck && npm run lint && npm run check:deadcode && npm run check:cycles",
+    "check": "npm run check:hooks && npm run check:scope && npm run check:agents && npm run check:brief && npm run check:claude-md && npm run typecheck && npm run lint && npm run check:deadcode && npm run check:cycles",
     "check:agents": "node scripts/check-commands.mjs --selftest && node scripts/check-commands.mjs && node scripts/check-handoff-contract.mjs --selftest && node scripts/check-handoff-contract.mjs && node scripts/agent-distribution.mjs --selftest",
     "check:hooks": "node scripts/check-hook-registration.mjs && node .claude/hooks/bash-gate.probe.mjs && node .claude/hooks/canon-inbox.probe.mjs && node .claude/hooks/agent-write-scope.probe.mjs && node .claude/hooks/agent-brief-gate.probe.mjs && node scripts/check-context-budget.mjs",
     "check:brief": "node scripts/check-brief.mjs --selftest && node scripts/check-brief.mjs .",
@@ -17,7 +17,9 @@
     "check:cycles": "madge --circular --extensions ts,tsx app components lib",
     "secrets": "node scripts/sync-secrets.mjs status",
     "secrets:pull": "node scripts/sync-secrets.mjs pull",
-    "secrets:push": "node scripts/sync-secrets.mjs push"
+    "secrets:push": "node scripts/sync-secrets.mjs push",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "check:scope": "node scripts/check-scope.mjs --selftest && node scripts/check-scope.mjs --wired"
   },
   "dependencies": {
     "@react-email/components": "^1.0.7",

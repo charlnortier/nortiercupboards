@@ -58,6 +58,10 @@ never *exempt*, so the reason has to argue it.
 | Row | Version | What | Evidence |
 |---|---|---|---|
 | `context-budget` | v1 | Adopted: canon's bytes, its default thresholds unchanged (answers CF-4). | `cmp .claude/hooks/context-budget.js E:/dev/dev-standards/kit/project-kit/hooks/context-budget.js` → identical |
+| `check-scope` | v2 | Adopted by hand (`apply-kit --write` is off-limits here): canon's bytes, KIT:CONFIG `scope` at canon's defaults — `BRANCH_GUARD = false`, `MAP = {}`. Answers handover 2026-10-09 §1. | `cmp scripts/check-scope.mjs E:/dev/dev-standards/kit/project-kit/scripts/check-scope.mjs` → identical; `node scripts/check-scope.mjs --wired` green |
+| `githook-pre-commit` | v1 | Adopted by hand, canon's bytes; `prepare` sets `core.hooksPath`. | `cmp .githooks/pre-commit E:/dev/dev-standards/kit/project-kit/githooks/pre-commit` → identical |
+| `githook-pre-push` | v1 | Adopted by hand, canon's bytes. | `cmp .githooks/pre-push E:/dev/dev-standards/kit/project-kit/githooks/pre-push` → identical |
+| `lint` | — | Not taken (handover §2): lint stays serial; measured 11.1s → 10.7s with `ESLintPoorConcurrencyWarning`. | handover 2026-10-09 |
 | `check-context-budget` | v1 | Adopted: canon's bytes (answers CF-4). | `cmp scripts/check-context-budget.mjs E:/dev/dev-standards/kit/project-kit/scripts/check-context-budget.mjs` → identical |
 
 ---
